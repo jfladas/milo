@@ -1,0 +1,33 @@
+#player {
+    width: 256px;
+    position: absolute;
+    top: 50vh;
+    left: 100px;
+}
+
+#playerSkin {
+    background-image: url("/gfx/fox.png");
+    background-repeat: no-repeat;
+    height: 256px;
+    width: 1024px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+body {
+    background-color: black;
+    overflow: hidden;
+}
+
+main {
+    overflow-x: hidden;
+    display: flex;
+    height: 100vh;
+}
+
+section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
