@@ -16,19 +16,25 @@ const fox = {
     skinElem: foxskElem,
     foxAnim: foxskElem.animate(null, { duration: 500, easing: 'steps(4)' }),
     animateFox() {
+        if (foxX < 0) {
+            foxX = 0;
+        } else if (foxX > window.innerWidth - 512) {
+            foxX = window.innerWidth - 512;
+        }
         let keyframes = [
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' }
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX + 'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX + 'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX + 'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX + 'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX + 'px, 0px)' }
         ];
-        if (scrl) {
+        if (scrl && !(rev && bgX >= 0) && !(!rev && bgX <= window.innerWidth * (-1) + 256)) {
             if (rev) {
                 foxX -= speed;
             } else {
                 foxX += speed;
             }
+
             keyframes = [
                 { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + (0 + foxX) + 'px, 0px)' },
                 { clip: 'rect(0px, 512px, 256px, 256px)', transform: 'translate(' + (-256 + foxX) + 'px, 0px)' },
@@ -73,7 +79,12 @@ const bg = {
     elem: bgElem,
     bgAnim: bgElem.animate(null, { duration: 10, easing: 'steps(10)' }),
     animateBG() {
-        if (scrl) {
+        if (bgX > 0) {
+            bgX = 0;
+        } else if (bgX < window.innerWidth*(-1) + 256) {
+            bgX = window.innerWidth * (-1) + 256;
+        }
+        if (scrl && !(rev && bgX >= 0) && !(!rev && bgX <= window.innerWidth * (-1) + 256)) {
             if (rev) {
                 bgX += speed;
             } else {
@@ -97,7 +108,7 @@ let wheelEventEndTimeout = null;
 window.addEventListener('wheel', (evt) => {
     //console.log(evt.deltaY);
     scrl = true;
-    if(evt.deltaY < 0) {
+    if (evt.deltaY < 0) {
         rev = true;
     } else if (evt.deltaY > 0) {
         rev = false;
@@ -105,11 +116,11 @@ window.addEventListener('wheel', (evt) => {
         rev = false;
         scrl = false;
     }
-    if(evt.deltaY > 80 || evt.deltaY < -80) {
+    if (evt.deltaY > 80 || evt.deltaY < -80) {
         speed = 4;
     } else {
         speed = 2;
-        if(evt.deltaY > -20 && evt.deltaY < 20) {
+        if (evt.deltaY > -20 && evt.deltaY < 20) {
             speed = 1;
         }
     }
