@@ -1,7 +1,7 @@
 #fox {
     width: 256px;
     position: absolute;
-    top: 48vh;
+    top: 55vh;
     left: 100px;
 }
 
@@ -33,7 +33,7 @@
 }
 
 #bg {
-    background-image: url("https://img.itch.zone/aW1hZ2UvMTIxNjU4LzU2MDM4MS5wbmc=/original/N/b6N3.png");
+    background-image: url("/gfx/bg.png");
     background-repeat: repeat-x;
     background-position: center;
     height: 100vh;

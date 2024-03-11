@@ -2,7 +2,7 @@ let scrl = false;
 let rev = false;
 let foxX = 0;
 let bgX = 0;
-let vx = 0;
+let speed = 2;
 const foxElem = document.getElementById("fox");
 const foxskElem = document.getElementById("foxSkin");
 const sparkElem = document.getElementById("spark");
@@ -15,42 +15,36 @@ const fox = {
     elem: foxElem,
     skinElem: foxskElem,
     foxAnim: foxskElem.animate(null, { duration: 500, easing: 'steps(4)' }),
-    walkAnim: foxElem.animate(null, { duration: 10, endDelay: -5 }),
-    animateFox(scrl) {
+    animateFox() {
         let keyframes = [
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' },
-            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' }
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' },
+            { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + foxX +'px, 0px)' }
         ];
         if (scrl) {
+            if (rev) {
+                foxX -= speed;
+            } else {
+                foxX += speed;
+            }
             keyframes = [
-                { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' },
-                { clip: 'rect(0px, 512px, 256px, 256px)', transform: 'translate(-256px, 0px)' },
-                { clip: 'rect(0px, 768px, 256px, 512px)', transform: 'translate(-512px, 0px)' },
-                { clip: 'rect(0px, 1024px, 256px, 768px)', transform: 'translate(-768px, 0px)' },
-                { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(0px, 0px)' }
+                { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + (0 + foxX) + 'px, 0px)' },
+                { clip: 'rect(0px, 512px, 256px, 256px)', transform: 'translate(' + (-256 + foxX) + 'px, 0px)' },
+                { clip: 'rect(0px, 768px, 256px, 512px)', transform: 'translate(' + (-512 + foxX) + 'px, 0px)' },
+                { clip: 'rect(0px, 1024px, 256px, 768px)', transform: 'translate(' + (-758 + foxX) + 'px, 0px)' },
+                { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + (0 + foxX) + 'px, 0px)' }
             ];
         }
 
         this.foxAnim.effect.setKeyframes(keyframes);
         this.foxAnim.play();
-    },
-    animateWalk(scrl, rev) {
-        if (scrl) {
-            if (rev) {
-                foxX -= 1;
-            } else {
-                foxX += 1;
-            }
-        }
-        this.walkAnim.effect.setKeyframes([
-            this.walkAnim.effect.getKeyframes()[1],
-            { transform: 'translateX(' + foxX * 0.1 + 'vw)' }
-        ]);
-        this.walkAnim.play();
     }
+};
+
+fox.foxAnim.onfinish = () => {
+    fox.animateFox();
 };
 
 const spark = {
@@ -71,58 +65,63 @@ const spark = {
     }
 };
 
-const bg = {
-    elem: bgElem,
-    bgAnim: bgElem.animate(null, { duration: 10, easing: 'steps(1)' }),
-    animateBG(progress) {
-        //this.bgAnim.effect.setKeyframes(keyframes);
-        //this.bgAnim.play();
-    }
-};
-
-fox.walkAnim.onfinish = () => {
-    fox.animateWalk(scrl, rev);
-};
-
-fox.foxAnim.onfinish = () => {
-    fox.animateFox(scrl);
-};
-
 spark.sparkAnim.onfinish = () => {
     sparkElem.hidden = true;
 };
 
+const bg = {
+    elem: bgElem,
+    bgAnim: bgElem.animate(null, { duration: 10, easing: 'steps(10)' }),
+    animateBG() {
+        if (scrl) {
+            if (rev) {
+                bgX += speed;
+            } else {
+                bgX -= speed;
+            }
+        }
+        this.bgAnim.effect.setKeyframes([
+            this.bgAnim.effect.getKeyframes()[1],
+            { transform: 'translateX(' + bgX + 'px)' }
+        ]);
+        this.bgAnim.play();
+    }
+};
+
 bg.bgAnim.onfinish = () => {
-    bgX += 1.5 * vx;
-    bg.bgAnim.effect.setKeyframes([
-        bg.bgAnim.effect.getKeyframes()[1],
-        { transform: 'translateX(' + bgX + 'px)' }
-    ]);
-    bg.bgAnim.play();
+    bg.animateBG();
 }
 
 const scrollContainer = document.querySelector("main");
 let wheelEventEndTimeout = null;
 window.addEventListener('wheel', (evt) => {
+    //console.log(evt.deltaY);
     scrl = true;
     if(evt.deltaY < 0) {
         rev = true;
-        vx = 5;
+    } else if (evt.deltaY > 0) {
+        rev = false;
     } else {
-        vx = -5;
+        rev = false;
+        scrl = false;
     }
-    
-    fox.animateFox(scrl);
-    
-    //bg.animateBG(evt.deltaY);
-    //scrollContainer.scrollLeft += evt.deltaY * 0.05;
+    if(evt.deltaY > 80 || evt.deltaY < -80) {
+        speed = 4;
+    } else {
+        speed = 2;
+        if(evt.deltaY > -20 && evt.deltaY < 20) {
+            speed = 1;
+        }
+    }
+    console.log(speed);
+    fox.animateFox();
+    bg.animateBG();
     clearTimeout(wheelEventEndTimeout);
     wheelEventEndTimeout = setTimeout(() => {
         scrl = false;
-        rev = false;
-        vx = 0;
-        fox.animateFox(scrl);
-    }, 100);
+        fox.animateFox();
+        bg.animateBG();
+    }, 300);
 });
 
 window.addEventListener('click', (evt) => {
