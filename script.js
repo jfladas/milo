@@ -3,9 +3,9 @@ let rev = false;
 let speed = 2;
 
 // Fox factory function
-const createFox = (foxElem, foxskElem) => {
+const createFox = (elem, skin) => {
     let x = 0;
-    const foxAnim = foxskElem.animate(null, { duration: 500, easing: 'steps(4)' });
+    const foxAnim = skin.animate(null, { duration: 500, easing: 'steps(4)' });
 
     const animateFox = () => {
         if (x < 0) {
@@ -46,13 +46,16 @@ const createFox = (foxElem, foxskElem) => {
 };
 
 // Spark factory function
-const createSpark = (sparkElem, sparkskElem) => {
+const createSpark = (elem, skin) => {
 
-    sparkElem.hidden = true;
+    elem.hidden = true;
 
-    const sparkAnim = sparkskElem.animate(null, { duration: 300, easing: 'steps(4)' });
+    const sparkAnim = skin.animate(null, { duration: 300, easing: 'steps(4)' });
 
-    const animateSpark = () => {
+    const animateSpark = (x, y) => {
+        elem.style.left = x - 50 + "px";
+        elem.style.top = y - 50 + "px";
+        elem.hidden = false;
         let keyframes = [
             { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'translate(0px, 0px)' },
             { clip: 'rect(0px, 192px, 96px, 96px)', transform: 'translate(-96px, 0px)' },
@@ -66,16 +69,16 @@ const createSpark = (sparkElem, sparkskElem) => {
     };
 
     sparkAnim.onfinish = () => {
-        sparkElem.hidden = true;
+        elem.hidden = true;
     };
 
     return { animateSpark };
 };
 
 // Background factory function
-const createBg = (bgElem) => {
+const createBg = (elem) => {
     let x = 0;
-    const bgAnim = bgElem.animate(null, { duration: 10, easing: 'steps(10)' });
+    const bgAnim = elem.animate(null, { duration: 10, easing: 'steps(10)' });
 
     const animateBG = () => {
         if (x > 0) {
@@ -105,7 +108,7 @@ const createBg = (bgElem) => {
     };
 };
 
-// Usage
+// Usage of the factory functions
 const fox = createFox(document.getElementById("fox"), document.getElementById("foxSkin"));
 const spark = createSpark(document.getElementById("spark"), document.getElementById("sparkSkin"));
 const bg = createBg(document.getElementById("bg"));
@@ -114,7 +117,6 @@ const bg = createBg(document.getElementById("bg"));
 const scrollContainer = document.querySelector("main");
 let wheelEventEndTimeout = null;
 window.addEventListener('wheel', (evt) => {
-    //console.log(evt.deltaY);
     scrl = true;
     if (evt.deltaY < 0) {
         rev = true;
@@ -143,8 +145,5 @@ window.addEventListener('wheel', (evt) => {
 });
 
 window.addEventListener('click', (evt) => {
-    sparkElem.style.left = evt.clientX - 50 + "px";
-    sparkElem.style.top = evt.clientY - 50 + "px";
-    sparkElem.hidden = false;
-    spark.animateSpark();
+    spark.animateSpark(evt.clientX, evt.clientY);
 });
