@@ -1,15 +1,27 @@
 let scrl = false;
 let rev = false;
-let speed = 2;
+let scrlSpeed = 1;
+let started = false;
+let fullscreen = false;
+let iconfs = document.getElementById("iconfs");
+
+function start() {
+    started = true;
+    document.getElementById("uicon").style.background = "none";
+    document.getElementById("uiimg").style.display = "none";
+}
+
+//start();
 
 // Fox factory function
 const createFox = (elem, skin) => {
     let x = 0;
+    let foxSpeed = 2;
     const foxAnim = skin.animate(null, { duration: 500, easing: 'steps(4)' });
 
     const animateFox = () => {
-        if (x < 0) {
-            x = 0;
+        if (x < (0)) {
+            x = (0);
         } else if (x > window.innerWidth - 512) {
             x = window.innerWidth - 512;
         }
@@ -21,11 +33,16 @@ const createFox = (elem, skin) => {
             { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + x + 'px, 0px)' }
         ];
         if (scrl && !(rev && bg.getX() >= 0) && !(!rev && bg.getX() <= window.innerWidth * (-1) + 256)) {
-            if (rev) {
-                x -= speed;
-            } else {
-                x += speed;
+            foxSpeed = window.innerWidth / 300;
+            if ((rev && x <= 0) || (!rev && x >= window.innerWidth - 512)) {
+                foxSpeed = 0;
             }
+            if (rev) {
+                x -= foxSpeed*scrlSpeed;
+            } else {
+                x += foxSpeed*scrlSpeed;
+            }
+            
 
             keyframes = [
                 { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + (0 + x) + 'px, 0px)' },
@@ -42,7 +59,10 @@ const createFox = (elem, skin) => {
 
     foxAnim.onfinish = animateFox;
 
-    return { animateFox };
+    return {
+        getX: () => x,
+        animateFox
+    };
 };
 
 // Spark factory function
@@ -78,6 +98,7 @@ const createSpark = (elem, skin) => {
 // Background factory function
 const createBg = (elem) => {
     let x = 0;
+    let bgSpeed = 2;
     const bgAnim = elem.animate(null, { duration: 10, easing: 'steps(10)' });
 
     const animateBG = () => {
@@ -87,10 +108,11 @@ const createBg = (elem) => {
             x = window.innerWidth * (-1) + 256;
         }
         if (scrl && !(rev && x >= 0) && !(!rev && x <= window.innerWidth * (-1) + 256)) {
+            bgSpeed = window.innerWidth / 500;
             if (rev) {
-                x += speed;
+                x += bgSpeed*scrlSpeed;
             } else {
-                x -= speed;
+                x -= bgSpeed*scrlSpeed;
             }
         }
         bgAnim.effect.setKeyframes([
@@ -113,37 +135,88 @@ const fox = createFox(document.getElementById("fox"), document.getElementById("f
 const spark = createSpark(document.getElementById("spark"), document.getElementById("sparkSkin"));
 const bg = createBg(document.getElementById("bg"));
 
+let dialogue = ["Hello", "How are you?", "What's your name?What's your name?What's your name?What's your name?What's your name?What's your name?What's your name?What's your name?What's your name?What's your name?"];
+let progress = 0;
 
 const scrollContainer = document.querySelector("main");
 let wheelEventEndTimeout = null;
 window.addEventListener('wheel', (evt) => {
-    scrl = true;
-    if (evt.deltaY < 0) {
-        rev = true;
-    } else if (evt.deltaY > 0) {
-        rev = false;
-    } else {
-        rev = false;
-        scrl = false;
-    }
-    if (evt.deltaY > 80 || evt.deltaY < -80) {
-        speed = 4;
-    } else {
-        speed = 2;
-        if (evt.deltaY > -20 && evt.deltaY < 20) {
-            speed = 1;
+    if (started) {
+        scrl = true;
+        if (evt.deltaY < 0) {
+            rev = true;
+        } else if (evt.deltaY > 0) {
+            rev = false;
+        } else {
+            rev = false;
+            scrl = false;
         }
-    }
-    fox.animateFox();
-    bg.animateBG();
-    clearTimeout(wheelEventEndTimeout);
-    wheelEventEndTimeout = setTimeout(() => {
-        scrl = false;
+        if (evt.deltaY == 100 || evt.deltaY == -100) {
+            scrlSpeed = 1;
+        } else if (evt.deltaY > 80 || evt.deltaY < -80) {
+            scrlSpeed = 0.5;
+        } else {
+            scrlSpeed = 0.3;
+            if (evt.deltaY > -20 && evt.deltaY < 20) {
+                scrlSpeed = 0.2;
+            }
+        }
         fox.animateFox();
         bg.animateBG();
-    }, 300);
+        clearTimeout(wheelEventEndTimeout);
+        wheelEventEndTimeout = setTimeout(() => {
+            scrl = false;
+            fox.animateFox();
+            bg.animateBG();
+        }, 300);
+    }
 });
 
 window.addEventListener('click', (evt) => {
+    document.getElementById("sparkSkin").style.zIndex = "5";
     spark.animateSpark(evt.clientX, evt.clientY);
+    console.log(evt.target.id);
+    if(evt.target.id != "iconfs") {
+        if (started) {
+
+        } else {
+            if (progress < dialogue.length) {
+                document.getElementById("uitxt").innerText = dialogue[progress];
+                progress++;
+            } else {
+                document.getElementById("uitxt").innerText = "";
+                start();
+            }
+        }
+    } else {
+        toggleFullscreen();
+    }
+    
 });
+
+let elem = document.documentElement;
+
+/* View in fullscreen */
+function toggleFullscreen() {
+    if (fullscreen) {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+        iconfs.src = "assets/fullscreen.png";
+        fullscreen = false;
+    } else {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+        iconfs.src = "assets/notfullscreen.png";
+        fullscreen = true;
+    }
+}

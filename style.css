@@ -1,47 +1,22 @@
-#fox {
-    width: 256px;
-    position: absolute;
-    top: 55vh;
-    left: 100px;
+@font-face {
+    font-family: pixel;
+    src: url("/assets/pixel.ttf");
+}
+*{
+    font-family: pixel;
+    font-size: 32px;
+    color: #d7cfcc;
+    cursor: url(assets/cursor.cur), default;
+}
+::-moz-selection {
+    /* Code for Firefox */
+    color: #010912;
+    background: #d7cfcc;
 }
 
-#foxSkin {
-    background-image: url("/gfx/fox.png");
-    background-repeat: no-repeat;
-    height: 256px;
-    width: 1024px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-#spark {
-    width: 96px;
-    position: absolute;
-    top: 25vh;
-    left: 100px;
-}
-
-#sparkSkin {
-    background-image: url("/gfx/spark.png");
-    background-repeat: no-repeat;
-    height: 96px;
-    width: 384px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-#bg {
-    background-image: url("/gfx/bg.png");
-    background-repeat: repeat-x;
-    background-position: center;
-    height: 100vh;
-    width: 200vw;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-
+::selection {
+    color: #010912;
+    background: #d7cfcc;
 }
 
 body {
@@ -59,4 +34,103 @@ section {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+#fox {
+    width: 256px;
+    position: absolute;
+    top: 55vh;
+    left: 100px;
+}
+
+#foxSkin {
+    background-image: url("/assets/fox.png");
+    background-repeat: no-repeat;
+    height: 256px;
+    width: 1024px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#spark {
+    width: 96px;
+    position: absolute;
+    top: 25vh;
+    left: 100px;
+}
+
+#sparkSkin {
+    background-image: url("/assets/spark.png");
+    background-repeat: no-repeat;
+    height: 96px;
+    width: 384px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 3;
+}
+
+#bg {
+    background-image: url("/assets/bg.png");
+    background-repeat: repeat-x;
+    background-position: center;
+    height: 100vh;
+    width: 200vw;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+}
+
+#uicon {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    background-color: #010912;
+    z-index: 4;
+}
+#uiimg {
+    object-fit: cover;
+    height: 75vh;
+    width: 100vw;
+}
+#uitxtcon {
+    height: 128px;
+    width: 100vw;
+    background-color: #010912;
+}
+#uitxt {
+    margin: 0px;
+    padding: 0px 10px;
+    margin: 10px;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+#btnfs {
+    background: none;
+    border: none;
+}
+#headercon {
+    width: 100vw;
+    background-color: #010912;
+    display: flex;
+    justify-content: space-between;
+}
+#spcon {
+    width: 50vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    
 }
