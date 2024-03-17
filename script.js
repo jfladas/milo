@@ -368,6 +368,69 @@ function handleClick(id) {
                 case "marin":
                     text = "Marin, du bisch toll <3";
                     break;
+                case "cathy":
+                case "caterina":
+                case "maude":
+                    text = "Hi " + player.name + "! I like your tattoos!";
+                    break;
+                case "angelika":
+                case "elias":
+                case "lisa":
+                    text = "Konnichiwa " + player.name + "-san! Ogenki desu ka?";
+                    break;
+                case "marc":
+                    text = "Hey " + player.name + "! I heard you are a great teacher!";
+                    break;
+                case "remo":
+                    text = "Remoooo! (^_^)/";
+                    break;
+                case "tim":
+                    text = "Tim! Let's *smash* this adventure together!";
+                    break;
+                case "api":
+                case "apisana":
+                    text = "What an honor to meet the Tekken Master " + player.name + " herself! I'm a big fan!";
+                    break;
+                case "tamara":
+                case "moon":
+                case "cherry":
+                case "dorjee":
+                case "blossom":
+                    text = "What a beautiful name, " + player.name + "! The *universe* is telling me that we are going to have a great time together!";
+                    break;
+                case "nick":
+                case "annina":
+                case "ardit":
+                case "arwen":
+                case "baramee":
+                case "chiara":
+                case "dario":
+                case "jan":
+                case "jennifer":
+                case "jules":
+                case "julian":
+                case "laura":
+                case "marco":
+                case "michelle":
+                case "mike":
+                case "nika":
+                case "rico":
+                case "sawmi":
+                case "sawmiya":
+                case "sebi":
+                case "sebastian":
+                case "silvan":
+                case "stefan":
+                case "yanis":
+                case "yannick":
+                    text = "Oh, hello " + player.name + "! You sound familiar... Have we met before?";
+                    break;
+                case "pia":
+                case "peter":
+                case "andrea":
+                case "monika":
+                    text = "Hey there " + player.name + "! You seem very *familiar*...";
+                    break;
             }
             introDia.changeNext(text);
             if (player.name != "Stranger") {
