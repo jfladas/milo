@@ -15,8 +15,8 @@
 }
 
 ::selection {
-    color: #010912;
-    background: #d7cfcc;
+    color: #d7cfcc;
+    background: #C04C09;
 }
 
 body {
@@ -124,6 +124,53 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+button {
+    background: none;
+    padding: 10px 20px;
+    border: #d7cfcc 4px solid;
+}
+button:hover {
+    background-color: #C04C09;
+    color: #d7cfcc;
+}
+button:active {
+    background-color: #d7cfcc;
+    color: #292322;
+    font-weight: bold;
+}
+input {
+    background-color: #d7cfcc;
+    color: #292322;
+    padding: 10px 20px;
+    border: #d7cfcc 4px solid;
+    outline: none;
+    min-width: 8ch;
+    max-width: 34ch;
+}
+input:hover,
+input:focus {
+    border: #292322 4px solid;
+}
+input::placeholder {
+    opacity: 0.75;
+    color: #292322;
+}
+
+
+#inputcon {
+    position: absolute;
+    top: 60vh;
+    left: 75vw;
+    z-index: 4;
+    width: 20vw;
+    height: 25vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
 #btnfs {
     background: none;
     border: none;

@@ -6,6 +6,11 @@ let scrlSpeed = 1;
 let started = false;
 let fullscreen = false;
 let iconfs = document.getElementById("iconfs");
+let player = {
+    name: "Stranger",
+    sparks: 0,
+    sympathy: 0
+};
 
 // Fox factory function
 const createFox = (elem, skin) => {
@@ -178,7 +183,7 @@ function checkEnd() {
 // Dialogue factory function
 const createDialogue = (script) => {
     let progress = 0;
-
+    let type = "statement";
     function next() {
         if (progress >= script.length) {
             return null; // End of dialogue
@@ -188,8 +193,10 @@ const createDialogue = (script) => {
         progress++;
 
         if (current.statement) {
+            type = "statement";
             return { type: "statement", text: current.statement };
         } else if (current.question) {
+            type = "question";
             return {
                 type: "question",
                 text: current.question,
@@ -197,18 +204,28 @@ const createDialogue = (script) => {
             };
         }
     }
+    function changeNext(statement) {
+        script[progress].statement = statement;
+    }
 
     return {
         next,
         getLength: () => script.length,
-        getProgress: () => progress
+        getProgress: () => progress,
+        getType: () => type,
+        changeNext
     };
 };
 
 const introDia = createDialogue([
-    { statement: "Hello" },
-    { statement: "How are you?" }
-    //,{ question: "What's your name?", answers: ["John", "Alice"] }
+    { statement: "Hey there! I'm Milo, your cheerful explorer pal!" },
+    { statement: "I love spending time with kind folks like you, and I'm thrilled to embark on this adventure together!" },
+    { question: "Oh, and what's your name, friend? I'd love to know!", answers: ["...is my Name"] },
+    { statement: "You don't wanna tell me? Thats okay..." },
+    { question: "Do you want to help me uncover the wonders of this forest?", answers: ["Yes", "No"] },
+    { statement: "Yay! Thank you!" },
+    { statement: "Click on interesting things to hear me share little tales about them. Exploring the woods together with you would make me very happy!" },
+    { statement: "And don't forget, scrolling moves us forward or backward. Let's make today unforgettable!" },
 ]);
 
 const scrollContainer = document.querySelector("main");
@@ -274,36 +291,108 @@ window.addEventListener('click', (evt) => {
             }
             break;
         default:
-            if (!started) {
-                spark.animateSpark(evt.clientX, evt.clientY);
-            }
+            break;
     }
-    if (!started && evt.target.id != "iconfs") {
-        nxttxt = introDia.next();
-        if (nxttxt != null) {
-            document.getElementById("uitxt").innerText = nxttxt.text;
-            if(nxttxt.type == "question") {
-                for (let i = 0; i < nxttxt.answers.length; i++) {
-                    let btn = document.createElement("button");
-                    btn.innerText = nxttxt.answers[i];
-                    btn.id = "btn" + i;
-                    btn.onclick = function() {
-                        document.getElementById("uitxt").innerText = "";
-                        nxttxt = introDia.next();
-                        if (nxttxt != null) {
-                            document.getElementById("uitxt").innerText = nxttxt.text;
-                        }
-                    }
-                    document.getElementById("uicon").appendChild(btn);
-                }
-            }
-        } else {
-            document.getElementById("uitxt").innerText = "";
-            start();
-        }
+    if (!started && evt.target.id != "iconfs" && introDia.getType() == "statement" && evt.target.tagName != "BUTTON") {
+        spark.animateSpark(evt.clientX, evt.clientY);
+        nextDialogue();
+    } else if (evt.target.tagName == "BUTTON") {
+        spark.animateSpark(evt.clientX, evt.clientY);
     }
-    
 });
+
+function nextDialogue() {
+    nxttxt = introDia.next();
+    if (nxttxt != null) {
+        document.getElementById("uitxt").innerText = nxttxt.text;
+        if (nxttxt.type == "question") {
+            if (introDia.getProgress() == 3) {
+                let input = document.createElement("input");
+                input.type = "text";
+                input.id = "input";
+                input.placeholder = "Stranger";
+                input.setAttribute("spellcheck", "false");
+                input.style.transform = "translateX(500%)";
+                input.style.transition = "transform 1s ease-in-out";
+                input.addEventListener('input', resizeInput);
+                resizeInput.call(input); // immediately call the function
+                function resizeInput() {
+                    this.style.width = this.value.length + "ch";
+                }
+                document.getElementById("inputcon").appendChild(input);
+                setTimeout(() => {
+                    input.style.transform = "translateX(0)";
+                }, 100);
+            }
+            for (let i = 0; i < nxttxt.answers.length; i++) {
+                let btn = document.createElement("button");
+                btn.innerText = nxttxt.answers[i];
+                btn.id = "btn_" + introDia.getProgress() + "_" + i;
+                btn.onclick = () => {
+                    handleClick(btn.id);
+                }
+                btn.style.transform = "translateX(500%)";
+                btn.style.transition = "transform 1s ease-in-out";
+                document.getElementById("inputcon").appendChild(btn);
+                setTimeout(() => {
+                    btn.style.transform = "translateX(0)";
+                }, 100);
+            }
+        }
+    } else {
+        document.getElementById("uitxt").innerText = "";
+        start();
+    }
+}
+function handleClick(id) {
+    switch (id) {
+        case "btn_3_0": // Name input
+            document.getElementById("input").hidden = true;
+            player.name = document.getElementById("input").value;
+            let text = "Nice to meet you, " + player.name + "! That's a lovely name!";
+            switch (player.name.toLowerCase()) {
+                case "":
+                case "stranger":
+                    player.name = "Stranger";
+                    text = "You don't wanna tell me? Thats okay...";
+                    break;
+                case "milo":
+                    text = "Hey, that's my name! Don't steal it! Just kidding, I'm happy to share it with you!";
+                    break;
+                case "jfladas":
+                    text = "That's a weird name... Sounds like an abbreviation... I wonder what it stands for...";
+                    break;
+                case "lukas":
+                    text = "That name sounds familiar... It's like I've heard it before... Oh well! Nice to meet you!";
+                    break;
+                case "marin":
+                    text = "Marin, du bisch toll <3";
+                    break;
+            }
+            introDia.changeNext(text);
+            if (player.name != "Stranger") {
+                //addSpark();
+            }
+            break;
+        case "btn_5_0": // Yes
+            introDia.changeNext("Yay! Thank you!");
+            //addSpark();
+            break;
+        case "btn_5_1": // No
+            introDia.changeNext("...");
+            //gameOver();
+            break;
+        default:
+            break;
+    }
+    if (document.getElementById("btn_" + introDia.getProgress() + "_0")) {
+        document.getElementById("btn_" + introDia.getProgress() + "_0").hidden = true;
+    }
+    if (document.getElementById("btn_" + introDia.getProgress() + "_1")) {
+        document.getElementById("btn_" + introDia.getProgress() + "_1").hidden = true;
+    }
+    nextDialogue();
+}
 
 let elem = document.documentElement;
 
