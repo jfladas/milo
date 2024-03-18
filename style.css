@@ -129,6 +129,7 @@ button {
     background: none;
     padding: 10px 20px;
     border: #d7cfcc 4px solid;
+    white-space: nowrap;
 }
 button:hover {
     background-color: #C04C09;

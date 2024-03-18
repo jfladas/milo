@@ -218,12 +218,12 @@ const createDialogue = (script) => {
 };
 
 const introDia = createDialogue([
-    { statement: "Hey there! I'm Milo, your cheerful explorer pal!" },
+    { statement: "Hey there! I'm Milo, your cheerful explorer buddy!" },
     { statement: "I love spending time with kind folks like you, and I'm thrilled to embark on this adventure together!" },
     { question: "Oh, and what's your name, friend? I'd love to know!", answers: ["...is my Name"] },
     { statement: "You don't wanna tell me? Thats okay..." },
     { question: "Do you want to help me uncover the wonders of this forest?", answers: ["Yes", "No"] },
-    { statement: "Yay! Thank you!" },
+    { statement: "Yay! Thank you! This is going to be so fun!" },
     { statement: "Click on interesting things to hear me share little tales about them. Exploring the woods together with you would make me very happy!" },
     { statement: "And don't forget, scrolling moves us forward or backward. Let's make today unforgettable!" },
 ]);
@@ -315,6 +315,12 @@ function nextDialogue() {
                 input.style.transform = "translateX(500%)";
                 input.style.transition = "transform 1s ease-in-out";
                 input.addEventListener('input', resizeInput);
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === "Enter") {
+                        handleInput();
+                        nextDialogue();
+                    }
+                });
                 resizeInput.call(input); // immediately call the function
                 function resizeInput() {
                     this.style.width = this.value.length + "ch";
@@ -323,6 +329,9 @@ function nextDialogue() {
                 setTimeout(() => {
                     input.style.transform = "translateX(0)";
                 }, 100);
+                setTimeout(() => {
+                    input.focus();
+                }, 1100);
             }
             for (let i = 0; i < nxttxt.answers.length; i++) {
                 let btn = document.createElement("button");
@@ -347,98 +356,10 @@ function nextDialogue() {
 function handleClick(id) {
     switch (id) {
         case "btn_3_0": // Name input
-            document.getElementById("input").hidden = true;
-            player.name = document.getElementById("input").value;
-            let text = "Nice to meet you, " + player.name + "! That's a lovely name!";
-            switch (player.name.toLowerCase()) {
-                case "":
-                case "stranger":
-                    player.name = "Stranger";
-                    text = "You don't wanna tell me? Thats okay...";
-                    break;
-                case "milo":
-                    text = "Hey, that's my name! Don't steal it! Just kidding, I'm happy to share it with you!";
-                    break;
-                case "jfladas":
-                    text = "That's a weird name... Sounds like an abbreviation... I wonder what it stands for...";
-                    break;
-                case "lukas":
-                    text = "That name sounds familiar... It's like I've heard it before... Oh well! Nice to meet you!";
-                    break;
-                case "marin":
-                    text = "Marin, du bisch toll <3";
-                    break;
-                case "cathy":
-                case "caterina":
-                case "maude":
-                    text = "Hi " + player.name + "! I like your tattoos!";
-                    break;
-                case "angelika":
-                case "elias":
-                case "lisa":
-                    text = "Konnichiwa " + player.name + "-san! Ogenki desu ka?";
-                    break;
-                case "marc":
-                    text = "Hey " + player.name + "! I heard you are a great teacher!";
-                    break;
-                case "remo":
-                    text = "Remoooo! (^_^)/";
-                    break;
-                case "tim":
-                    text = "Tim! Let's *smash* this adventure together!";
-                    break;
-                case "api":
-                case "apisana":
-                    text = "What an honor to meet the Tekken Master " + player.name + " herself! I'm a big fan!";
-                    break;
-                case "tamara":
-                case "moon":
-                case "cherry":
-                case "dorjee":
-                case "blossom":
-                    text = "What a beautiful name, " + player.name + "! The *universe* is telling me that we are going to have a great time together!";
-                    break;
-                case "nick":
-                case "annina":
-                case "ardit":
-                case "arwen":
-                case "baramee":
-                case "chiara":
-                case "dario":
-                case "jan":
-                case "jennifer":
-                case "jules":
-                case "julian":
-                case "laura":
-                case "marco":
-                case "michelle":
-                case "mike":
-                case "nika":
-                case "rico":
-                case "sawmi":
-                case "sawmiya":
-                case "sebi":
-                case "sebastian":
-                case "silvan":
-                case "stefan":
-                case "yanis":
-                case "yannick":
-                    text = "Oh, hello " + player.name + "! You sound familiar... Have we met before?";
-                    break;
-                case "pia":
-                case "peter":
-                case "andrea":
-                case "monika":
-                    text = "Hey there " + player.name + "! You seem very *familiar*...";
-                    break;
-            }
-            introDia.changeNext(text);
-            if (player.name != "Stranger") {
-                //addSpark();
-            }
+            handleInput();
             break;
         case "btn_5_0": // Yes
-            introDia.changeNext("Yay! Thank you!");
+            introDia.changeNext("Yay! Thank you! This is going to be so fun!");
             //addSpark();
             break;
         case "btn_5_1": // No
@@ -455,6 +376,100 @@ function handleClick(id) {
         document.getElementById("btn_" + introDia.getProgress() + "_1").hidden = true;
     }
     nextDialogue();
+}
+function handleInput() {
+    document.getElementById("input").hidden = true;
+    if (document.getElementById("btn_" + introDia.getProgress() + "_0")) {
+        document.getElementById("btn_" + introDia.getProgress() + "_0").hidden = true;
+    }
+    player.name = document.getElementById("input").value;
+    let text = "Nice to meet you, " + player.name + "! That's a lovely name!";
+    switch (player.name.toLowerCase()) {
+        case "":
+        case "stranger":
+            player.name = "Stranger";
+            text = "You don't wanna tell me? Thats okay...";
+            break;
+        case "milo":
+            text = "Hey, that's my name! Don't steal it! Just kidding, I'm happy to share it with you!";
+            break;
+        case "jfladas":
+            text = "That's a weird name... Sounds like an abbreviation... I wonder what it stands for...";
+            break;
+        case "lukas":
+            text = "That name sounds familiar... It's like I've heard it before... Oh well! Nice to meet you!";
+            break;
+        case "marin":
+            text = "Marin, du bisch toll <3";
+            break;
+        case "cathy":
+        case "caterina":
+        case "maude":
+            text = "Hi " + player.name + "! I like your tattoos!";
+            break;
+        case "angelika":
+        case "elias":
+        case "lisa":
+            text = "Konnichiwa " + player.name + "-san! Ogenki desu ka?";
+            break;
+        case "marc":
+            text = "Hey " + player.name + "! I heard you are a great teacher!";
+            break;
+        case "remo":
+            text = "Remoooo! (^_^)/";
+            break;
+        case "tim":
+            text = "Tim! Let's *smash* this adventure together!";
+            break;
+        case "api":
+        case "apisana":
+            text = "What an honor to meet the Tekken Master " + player.name + " herself! I'm a big fan!";
+            break;
+        case "tamara":
+        case "moon":
+        case "cherry":
+        case "dorjee":
+        case "blossom":
+            text = "What a beautiful name, " + player.name + "! The *universe* is telling me that we are going to have a great time together!";
+            break;
+        case "nick":
+        case "annina":
+        case "ardit":
+        case "arwen":
+        case "baramee":
+        case "chiara":
+        case "dario":
+        case "jan":
+        case "jennifer":
+        case "jules":
+        case "julian":
+        case "laura":
+        case "marco":
+        case "michelle":
+        case "mike":
+        case "nika":
+        case "rico":
+        case "sawmi":
+        case "sawmiya":
+        case "sebi":
+        case "sebastian":
+        case "silvan":
+        case "stefan":
+        case "yanis":
+        case "yannick":
+            text = "Oh, hello " + player.name + "! You sound familiar... Have we met before?";
+            break;
+        case "pia":
+        case "peter":
+        case "andrea":
+        case "monika":
+            text = "Hey there " + player.name + "! You seem very *familiar*...";
+            break;
+    }
+    introDia.changeNext(text);
+    if (player.name != "Stranger") {
+        //addSpark();
+    }
 }
 
 let elem = document.documentElement;
