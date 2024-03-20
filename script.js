@@ -11,6 +11,18 @@ let player = {
     sparks: 0,
     sympathy: 0
 };
+let secrets = {
+    uncovered: false,
+    count: 3,
+    found: 0,
+    ucFox: false,
+    ucShrum1: false,
+    ucShrum2: false,
+    ucShrum3: false
+}
+const scrollContainer = document.querySelector("main");
+let wheelEventEndTimeout = null;
+let docelem = document.documentElement;
 
 // Fox factory function
 const createFox = (elem, skin) => {
@@ -31,8 +43,8 @@ const createFox = (elem, skin) => {
             { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + x + 'px, 0px)' },
             { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + x + 'px, 0px)' }
         ];
-        if (scrl && (!(rev && bg.getX() >= 0) || !(rev && x <= 0)) && (!(!rev && bg.getX() <= window.innerWidth * (-1) + 256) || !(!rev && x >= window.innerWidth - 512))) {
-            foxSpeed = (window.innerWidth - 512) / 300;
+        if (scrl && (!(rev && bg.getX() >= 0) || !(rev && x <= 0)) && (!(!rev && bg.getX() <= window.innerWidth * (-1)) || !(!rev && x >= window.innerWidth - 512))) {
+            foxSpeed = window.innerWidth / 200;
             if ((rev && x <= 0) || (!rev && x >= window.innerWidth - 512)) {
                 foxSpeed = 0;
             }
@@ -104,11 +116,11 @@ const createBg = (elem) => {
     const animateBG = () => {
         if (x > 0) {
             x = 0;
-        } else if (x < window.innerWidth * (-1) + 256) {
-            x = window.innerWidth * (-1) + 256;
+        } else if (x < window.innerWidth * (-2) + 256) {
+            x = window.innerWidth * (-2) + 256;
         }
-        if (scrl && !(rev && x >= 0) && !(!rev && x <= window.innerWidth * (-1) + 256)) {
-            bgSpeed = window.innerWidth / 600;
+        if (scrl && !(rev && x >= 0) && !(!rev && x <= window.innerWidth * (-1))) {
+            bgSpeed = window.innerWidth / 400;
             if (rev) {
                 x += bgSpeed*scrlSpeed;
             } else {
@@ -134,9 +146,9 @@ const createBg = (elem) => {
     };
 };
 
-// Background factory function
+// Parallax factory function
 const createPrlx = (elem, factor, pos) => {
-    let p = pos;
+    let p = pos * window.innerWidth / 50;
     const prlxAnim = elem.animate(null, { duration: 10, easing: 'steps(10)' });
 
     const animatePrlx = (x) => {
@@ -154,36 +166,77 @@ const createPrlx = (elem, factor, pos) => {
     };
 };
 
-// Usage of the factory functions
-const fox = createFox(document.getElementById("fox"), document.getElementById("foxSkin"));
-const spark = createSpark(document.getElementById("spark"), document.getElementById("sparkSkin"));
-const bg = createBg(document.getElementById("bg"));
-
-let prlxItems = [];
-let els = document.getElementsByClassName("prlx");
-Array.prototype.forEach.call(els, function (el) {
-    prlxItems.push(createPrlx(el, el.getAttribute("data-prlx-factor"), el.getAttribute("data-prlx-pos")));
-});
-
-function start() {
-    started = true;
-    document.getElementById("uicon").style.background = "none";
-    document.getElementById("uiimg").style.display = "none";
-    document.getElementById("uicon").style.zIndex = "0";
-}
-
-function checkEnd() {
-    if (bg.getX() == window.innerWidth * (-1) + 256 && fox.getX() == window.innerWidth - 512) {
-        end = true
-    } else {
-        end = false;
-    }
-}
-
 // Dialogue factory function
-const createDialogue = (script) => {
+const createDialogue = (script, name) => {
     let progress = 0;
     let type = "statement";
+    function nextDialogue() {
+        dialogue = this;
+        nxttxt = dialogue.next();
+        if (nxttxt != null) {
+            document.getElementById("uitxt").innerText = nxttxt.text;
+            if (dialogue == aboutMilo || dialogue == aboutShrums) {
+                let nowtxt = nxttxt.text;
+                setTimeout(() => {
+                    console.log(document.getElementById("uitxt").innerText, nowtxt, document.getElementById("uitxt").innerText == nowtxt);
+                    if (document.getElementById("uitxt").innerText == nowtxt) {
+                        document.getElementById("uitxt").innerText = "";
+                    }
+                }, 5000);
+                if (dialogue == aboutShrums) {
+                    secrets.found++;
+                }
+            }
+            if (nxttxt.type == "question") {
+                if (dialogue == introDia && introDia.getProgress() == 3) {
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "input";
+                    input.placeholder = "Stranger";
+                    input.setAttribute("spellcheck", "false");
+                    input.style.transform = "translateX(500%)";
+                    input.style.transition = "transform 1s ease-in-out";
+                    input.addEventListener('input', resizeInput);
+                    input.addEventListener('keydown', (event) => {
+                        if (event.key === "Enter") {
+                            handleInput();
+                            introDia.nextDialogue();
+                        }
+                    });
+                    resizeInput.call(input); // immediately call the function
+                    function resizeInput() {
+                        this.style.width = this.value.length + "ch";
+                    }
+                    document.getElementById("inputcon").appendChild(input);
+                    setTimeout(() => {
+                        input.style.transform = "translateX(0)";
+                    }, 100);
+                    setTimeout(() => {
+                        input.focus();
+                    }, 1100);
+                }
+                for (let i = 0; i < nxttxt.answers.length; i++) {
+                    let btn = document.createElement("button");
+                    btn.innerText = nxttxt.answers[i];
+                    btn.id = dialogue.getName() + "_btn_" + dialogue.getProgress() + "_" + i;
+                    btn.onclick = () => {
+                        handleClick(btn.id);
+                    }
+                    btn.style.transform = "translateX(500%)";
+                    btn.style.transition = "transform 1s ease-in-out";
+                    document.getElementById("inputcon").appendChild(btn);
+                    setTimeout(() => {
+                        btn.style.transform = "translateX(0)";
+                    }, 100);
+                }
+            }
+        } else {
+            document.getElementById("uitxt").innerText = "";
+            if (dialogue == introDia) {
+                start();
+            }
+        }
+    }
     function next() {
         if (progress >= script.length) {
             return null; // End of dialogue
@@ -209,13 +262,26 @@ const createDialogue = (script) => {
     }
 
     return {
-        next,
+        next: next,
+        nextDialogue,
         getLength: () => script.length,
         getProgress: () => progress,
         getType: () => type,
+        getName: () => name,
         changeNext
     };
 };
+
+// Usage of the factory functions
+const fox = createFox(document.getElementById("fox"), document.getElementById("foxSkin"));
+const spark = createSpark(document.getElementById("spark"), document.getElementById("sparkSkin"));
+const bg = createBg(document.getElementById("bg"));
+
+let prlxItems = [];
+let els = document.getElementsByClassName("prlx");
+Array.prototype.forEach.call(els, function (el) {
+    prlxItems.push(createPrlx(el, el.getAttribute("data-prlx-factor"), el.getAttribute("data-prlx-pos")));
+});
 
 const introDia = createDialogue([
     { statement: "Hey there! I'm Milo, your cheerful explorer buddy!" },
@@ -226,10 +292,47 @@ const introDia = createDialogue([
     { statement: "Yay! Thank you! This is going to be so fun!" },
     { statement: "Click on interesting things to hear me share little tales about them. Exploring the woods together with you would make me very happy!" },
     { statement: "And don't forget, scrolling moves us forward or backward. Let's make today unforgettable!" },
-]);
+], "intro");
+const aboutMilo = createDialogue([
+    { statement: "Oh, me? Well, I'm Milo, the friendly fox. I've roamed these woods for as long as I can remember, always on the lookout for new adventures and hidden secrets." },
+], "milo");
+const aboutShrums = createDialogue([
+    { statement: "Ah, mushrooms! Each one holds a mystery, from the delicious to the poisonous, even those that glow. They're like hidden treasures in the forest." },
+    { statement: "These mushrooms, small yet significant, emerge from the shadows, reminding us of beauty in darkness. Like the forest, every fleeting moment shapes our journey." },
+    { statement: "Like time's guardians, the shrooms silently witness nature's rhythm. They remind us to cherish fleeting moments as they bloom and fade." }
+], "shrum");
 
-const scrollContainer = document.querySelector("main");
-let wheelEventEndTimeout = null;
+function start() {
+    started = true;
+    document.getElementById("uicon").style.background = "none";
+    document.getElementById("uiimg").style.display = "none";
+    document.getElementById("uicon").style.zIndex = "0";
+    document.getElementById("inputcon").style.display = "none";
+    setTimeout(() => {
+        let btn = document.createElement("button");
+        btn.innerText = "done exploring!";
+        btn.id = "btn_continue";
+        btn.onclick = () => {
+            window.location.href = "river.html";
+        }
+        btn.style.transform = "translateX(500%)";
+        btn.style.transition = "transform 1s ease-in-out";
+        document.getElementById("inputcon").style.display = "flex";
+        document.getElementById("inputcon").appendChild(btn);
+        setTimeout(() => {
+            btn.style.transform = "translateX(0)";
+        }, 100);
+    }, 10000);
+}
+
+function checkEnd() {
+    if (bg.getX() == window.innerWidth * (-1) + 256 && fox.getX() == window.innerWidth - 512) {
+        end = true
+    } else {
+        end = false;
+    }
+}
+
 window.addEventListener('wheel', (evt) => {
     if (started) {
         scrl = true;
@@ -261,130 +364,100 @@ window.addEventListener('wheel', (evt) => {
         }, 300);
     }
 });
-
 window.addEventListener('click', (evt) => {
     
     console.log("clicked on: " + evt.target.id);
     switch (evt.target.id) {
         case "foxSkin":
-            spark.animateSpark(evt.clientX, evt.clientY);
-            console.log("clicked on fox");
+            if (!secrets.ucFox) {
+                spark.animateSpark(evt.clientX, evt.clientY);
+                aboutMilo.nextDialogue();
+                addSpark();
+                secrets.ucFox = true;
+            }
             break;
         case "iconfs":
             spark.animateSpark(evt.clientX, evt.clientY);
             toggleFullscreen();
             break;
         case "shrum1":
-            console.log(evt.clientY);
-            if (evt.clientY > window.innerHeight - 300) {
+            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum1) {
                 spark.animateSpark(evt.clientX, evt.clientY);
+                aboutShrums.nextDialogue();
+                secrets.ucShrum1 = true;
             }
             break;
         case "shrum2":
-            if (evt.clientY > window.innerHeight - 300) {
+            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum2) {
                 spark.animateSpark(evt.clientX, evt.clientY);
+                aboutShrums.nextDialogue();
+                secrets.ucShrum2 = true;
             }
             break;
         case "shrum3":
-            if (evt.clientY > window.innerHeight - 300) {
+            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum3) {
                 spark.animateSpark(evt.clientX, evt.clientY);
+                aboutShrums.nextDialogue();
+                secrets.ucShrum3 = true;
             }
             break;
         default:
             break;
     }
+    if (secrets.found == secrets.count && !secrets.uncovered) {
+        addSpark();
+        secrets.uncovered = true;
+    }
     if (!started && evt.target.id != "iconfs" && introDia.getType() == "statement" && evt.target.tagName != "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
-        nextDialogue();
+        introDia.nextDialogue();
     } else if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
     }
 });
-
-function nextDialogue() {
-    nxttxt = introDia.next();
-    if (nxttxt != null) {
-        document.getElementById("uitxt").innerText = nxttxt.text;
-        if (nxttxt.type == "question") {
-            if (introDia.getProgress() == 3) {
-                let input = document.createElement("input");
-                input.type = "text";
-                input.id = "input";
-                input.placeholder = "Stranger";
-                input.setAttribute("spellcheck", "false");
-                input.style.transform = "translateX(500%)";
-                input.style.transition = "transform 1s ease-in-out";
-                input.addEventListener('input', resizeInput);
-                input.addEventListener('keydown', (event) => {
-                    if (event.key === "Enter") {
-                        handleInput();
-                        nextDialogue();
-                    }
-                });
-                resizeInput.call(input); // immediately call the function
-                function resizeInput() {
-                    this.style.width = this.value.length + "ch";
-                }
-                document.getElementById("inputcon").appendChild(input);
-                setTimeout(() => {
-                    input.style.transform = "translateX(0)";
-                }, 100);
-                setTimeout(() => {
-                    input.focus();
-                }, 1100);
-            }
-            for (let i = 0; i < nxttxt.answers.length; i++) {
-                let btn = document.createElement("button");
-                btn.innerText = nxttxt.answers[i];
-                btn.id = "btn_" + introDia.getProgress() + "_" + i;
-                btn.onclick = () => {
-                    handleClick(btn.id);
-                }
-                btn.style.transform = "translateX(500%)";
-                btn.style.transition = "transform 1s ease-in-out";
-                document.getElementById("inputcon").appendChild(btn);
-                setTimeout(() => {
-                    btn.style.transform = "translateX(0)";
-                }, 100);
-            }
-        }
-    } else {
-        document.getElementById("uitxt").innerText = "";
-        start();
-    }
-}
 function handleClick(id) {
-    switch (id) {
-        case "btn_3_0": // Name input
-            handleInput();
+    let dialogue;
+    switch (id.split("_")[0]) {
+        case "intro":
+            dialogue = introDia;
             break;
-        case "btn_5_0": // Yes
-            introDia.changeNext("Yay! Thank you! This is going to be so fun!");
-            //addSpark();
-            break;
-        case "btn_5_1": // No
-            introDia.changeNext("...");
-            //gameOver();
+        case "aboutMilo":
+            dialogue = aboutMilo;
             break;
         default:
             break;
     }
-    if (document.getElementById("btn_" + introDia.getProgress() + "_0")) {
-        document.getElementById("btn_" + introDia.getProgress() + "_0").hidden = true;
+    switch (id) {
+        case "intro_btn_3_0": // Name input
+            handleInput();
+            break;
+        case "intro_btn_5_0": // Yes
+            introDia.changeNext("Yay! Thank you! This is going to be so fun!");
+            addSpark();
+            break;
+        case "intro_btn_5_1": // No
+            introDia.changeNext("...");
+            window.location.href = "gameover.html";
+            break;
+        default:
+            break;
     }
-    if (document.getElementById("btn_" + introDia.getProgress() + "_1")) {
-        document.getElementById("btn_" + introDia.getProgress() + "_1").hidden = true;
+    if (document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_0")) {
+        document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_0").hidden = true;
     }
-    nextDialogue();
+    if (document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_1")) {
+        document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_1").hidden = true;
+    }
+    introDia.nextDialogue();
 }
 function handleInput() {
     document.getElementById("input").hidden = true;
-    if (document.getElementById("btn_" + introDia.getProgress() + "_0")) {
-        document.getElementById("btn_" + introDia.getProgress() + "_0").hidden = true;
+    if (document.getElementById("intro_btn_" + introDia.getProgress() + "_0")) {
+        document.getElementById("intro_btn_" + introDia.getProgress() + "_0").hidden = true;
     }
     player.name = document.getElementById("input").value;
     let text = "Nice to meet you, " + player.name + "! That's a lovely name!";
-    switch (player.name.toLowerCase()) {
+    switch (player.name.toLowerCase().replace(/\s/g, '')) {
         case "":
         case "stranger":
             player.name = "Stranger";
@@ -449,6 +522,7 @@ function handleInput() {
         case "mike":
         case "nika":
         case "rico":
+        case "riggo":
         case "sawmi":
         case "sawmiya":
         case "sebi":
@@ -457,7 +531,7 @@ function handleInput() {
         case "stefan":
         case "yanis":
         case "yannick":
-            text = "Oh, hello " + player.name + "! You sound familiar... Have we met before?";
+            text = "Oh, hello " + player.name + "! Have we met before? Anyway, ready to ideate our way to greatness together?";
             break;
         case "pia":
         case "peter":
@@ -468,11 +542,17 @@ function handleInput() {
     }
     introDia.changeNext(text);
     if (player.name != "Stranger") {
-        //addSpark();
+        addSpark();
     }
 }
 
-let elem = document.documentElement;
+function addSpark() {
+    let newSpark = document.getElementsByClassName("sparks")[player.sparks];
+    console.log(newSpark);
+    player.sparks++;
+    //animation
+    newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
+}
 
 /* View in fullscreen */
 function toggleFullscreen() {
@@ -487,14 +567,14 @@ function toggleFullscreen() {
         iconfs.src = "assets/fullscreen.png";
         fullscreen = false;
     } else {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
+        if (docelem.requestFullscreen) {
+            docelem.requestFullscreen();
+        } else if (docelem.webkitRequestFullscreen) { /* Safari */
+            docelem.webkitRequestFullscreen();
+        } else if (docelem.msRequestFullscreen) { /* IE11 */
+            docelem.msRequestFullscreen();
         }
         iconfs.src = "assets/notfullscreen.png";
         fullscreen = true;
     }
-}
+};
