@@ -90,18 +90,32 @@ const createSpark = (elem, skin) => {
 
     const sparkAnim = skin.animate(null, { duration: 300, easing: 'steps(4)' });
 
-    const animateSpark = (x, y) => {
-        elem.style.left = x - 50 + "px";
-        elem.style.top = y - 50 + "px";
+    const animateSpark = (x, y, big = false) => {
+        
         elem.hidden = false;
-        let keyframes = [
-            { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'translate(0px, 0px)' },
-            { clip: 'rect(0px, 192px, 96px, 96px)', transform: 'translate(-96px, 0px)' },
-            { clip: 'rect(0px, 288px, 96px, 192px)', transform: 'translate(-192px, 0px)' },
-            { clip: 'rect(0px, 384px, 96px, 288px)', transform: 'translate(-288px, 0px)' },
-            { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'translate(0px, 0px)' }
-        ];
-        document.getElementById("sparkSkin").style.zIndex = "5";
+        let keyframes;
+        if (big) {
+            elem.style.left = x + 100 + "px";
+            elem.style.top = y - 50 + "px";
+            keyframes = [
+                { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'scale(2) translate(0px, 0px)' },
+                { clip: 'rect(0px, 192px, 96px, 96px)', transform: 'scale(2) translate(-96px, 0px)' },
+                { clip: 'rect(0px, 288px, 96px, 192px)', transform: 'scale(2) translate(-192px, 0px)' },
+                { clip: 'rect(0px, 384px, 96px, 288px)', transform: 'scale(2) translate(-288px, 0px)' },
+                { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'scale(2) translate(0px, 0px)' }
+            ];
+        } else {
+            elem.style.left = x - 50 + "px";
+            elem.style.top = y - 50 + "px";
+            keyframes = [
+                { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'translate(0px, 0px)' },
+                { clip: 'rect(0px, 192px, 96px, 96px)', transform: 'translate(-96px, 0px)' },
+                { clip: 'rect(0px, 288px, 96px, 192px)', transform: 'translate(-192px, 0px)' },
+                { clip: 'rect(0px, 384px, 96px, 288px)', transform: 'translate(-288px, 0px)' },
+                { clip: 'rect(0px, 96px, 96px, 0px)', transform: 'translate(0px, 0px)' }
+            ];
+        }
+        skin.style.zIndex = "5";
         sparkAnim.effect.setKeyframes(keyframes);
         sparkAnim.play();
     };
@@ -397,6 +411,12 @@ function animateBirds() {
     }
 }
 
+window.addEventListener('load', function () {
+    this.setTimeout(() => {
+        document.getElementById("title").style.opacity = "0";
+    }, 100);
+})
+
 window.addEventListener('wheel', (evt) => {
     if (started) {
         scrl = true;
@@ -499,7 +519,7 @@ window.addEventListener('click', (evt) => {
             break;
     }
     if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
-        spark.animateSpark(evt.clientX, evt.clientY);
+        spark.animateSpark(evt.clientX, evt.clientY, true);
         dialogue.nextDialogue();
     } else if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
@@ -594,6 +614,7 @@ function handleInput() {
             break;
         case "angelika":
         case "angel":
+        case "angi":
         case "elias":
         case "lisa":
             text = "Konnichiwa " + player.name + "-san! Ogenki desu ka?";
@@ -652,6 +673,9 @@ function handleInput() {
         case "monika":
             text = "Hey there " + player.name + "! You seem very *familiar*...";
             break;
+        case "kuromi":
+            text = "hi bitch. ikusou(?) bitch.";
+            break;
     }
     introDia.changeNext(text);
     if (player.name != "Stranger") {
@@ -664,7 +688,7 @@ function addSpark() {
     console.log(newSpark);
     player.sparks++;
     //animation
-    newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
+    newSpark.style.backgroundImage = "url('assets/sparks_ful.png')";
 }
 
 /* View in fullscreen */

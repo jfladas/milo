@@ -27,9 +27,20 @@
     background: var(--orange);
 }
 
-body {
+html {
     background-color: var(--dark);
     overflow: hidden;
+}
+
+#title {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
+    background-image: url("/assets/logo3.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #bgcon {
@@ -143,7 +154,7 @@ body {
 }
 
 button {
-    background: #292322;
+    background: var(--black);
     padding: 10px 20px;
     border: var(--light) 4px solid;
     white-space: nowrap;
@@ -200,6 +211,7 @@ input::placeholder {
 #btnfs {
     background: none;
     border: none;
+    text-overflow: clip;
 }
 
 #headercon {
