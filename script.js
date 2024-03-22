@@ -4,6 +4,7 @@ let end = false;
 let nxttxt = null;
 let scrlSpeed = 1;
 let started = false;
+let scene = 0; // 1 = forest, 2 = river, 3 = cliff
 let fullscreen = false;
 let iconfs = document.getElementById("iconfs");
 let player = {
@@ -13,19 +14,23 @@ let player = {
 };
 let secrets = {
     uncovered: false,
-    count: 3,
+    count: 5,
     found: 0,
     ucFox: false,
     ucShrum1: false,
     ucShrum2: false,
-    ucShrum3: false
+    ucShrum3: false,
+    ucBerries: false,
+    ucBirds: false
 }
 const scrollContainer = document.querySelector("main");
 let wheelEventEndTimeout = null;
 let docelem = document.documentElement;
 
+nextScene();
+
 // Fox factory function
-const createFox = (elem, skin) => {
+const createFox = (skin) => {
     let x = 0;
     let foxSpeed = 2;
     const foxAnim = skin.animate(null, { duration: 500, easing: 'steps(4)' });
@@ -44,17 +49,18 @@ const createFox = (elem, skin) => {
             { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + x + 'px, 0px)' }
         ];
         if (scrl && (!(rev && bg.getX() >= 0) || !(rev && x <= 0)) && (!(!rev && bg.getX() <= window.innerWidth * (-1)) || !(!rev && x >= window.innerWidth - 512))) {
-            foxSpeed = window.innerWidth / 200;
+            foxSpeed = window.innerWidth / 400;
             if ((rev && x <= 0) || (!rev && x >= window.innerWidth - 512)) {
                 foxSpeed = 0;
             }
             if (rev) {
-                x -= foxSpeed*scrlSpeed;
+                x -= foxSpeed * scrlSpeed;
+                skin.style.backgroundImage = "url('assets/foxrev.png')";
             } else {
-                x += foxSpeed*scrlSpeed;
+                x += foxSpeed * scrlSpeed;
+                skin.style.backgroundImage = "url('assets/fox.png')";
             }
             
-
             keyframes = [
                 { clip: 'rect(0px, 256px, 256px, 0px)', transform: 'translate(' + (0 + x) + 'px, 0px)' },
                 { clip: 'rect(0px, 512px, 256px, 256px)', transform: 'translate(' + (-256 + x) + 'px, 0px)' },
@@ -120,7 +126,7 @@ const createBg = (elem) => {
             x = window.innerWidth * (-2) + 256;
         }
         if (scrl && !(rev && x >= 0) && !(!rev && x <= window.innerWidth * (-1))) {
-            bgSpeed = window.innerWidth / 400;
+            bgSpeed = window.innerWidth / 600;
             if (rev) {
                 x += bgSpeed*scrlSpeed;
             } else {
@@ -175,15 +181,15 @@ const createDialogue = (script, name) => {
         nxttxt = dialogue.next();
         if (nxttxt != null) {
             document.getElementById("uitxt").innerText = nxttxt.text;
-            if (dialogue == aboutMilo || dialogue == aboutShrums) {
+            if (dialogue == aboutMilo || dialogue == aboutShrums || dialogue == aboutBerries || dialogue == aboutBirds) {
                 let nowtxt = nxttxt.text;
                 setTimeout(() => {
                     console.log(document.getElementById("uitxt").innerText, nowtxt, document.getElementById("uitxt").innerText == nowtxt);
                     if (document.getElementById("uitxt").innerText == nowtxt) {
                         document.getElementById("uitxt").innerText = "";
                     }
-                }, 5000);
-                if (dialogue == aboutShrums) {
+                }, 10000);
+                if (dialogue == aboutShrums || dialogue == aboutBerries || dialogue == aboutBirds) {
                     secrets.found++;
                 }
             }
@@ -232,7 +238,7 @@ const createDialogue = (script, name) => {
             }
         } else {
             document.getElementById("uitxt").innerText = "";
-            if (dialogue == introDia) {
+            if (dialogue == introDia || dialogue == riverDia) {
                 start();
             }
         }
@@ -273,7 +279,7 @@ const createDialogue = (script, name) => {
 };
 
 // Usage of the factory functions
-const fox = createFox(document.getElementById("fox"), document.getElementById("foxSkin"));
+const fox = createFox(document.getElementById("foxSkin"));
 const spark = createSpark(document.getElementById("spark"), document.getElementById("sparkSkin"));
 const bg = createBg(document.getElementById("bg"));
 
@@ -298,9 +304,25 @@ const aboutMilo = createDialogue([
 ], "milo");
 const aboutShrums = createDialogue([
     { statement: "Ah, mushrooms! Each one holds a mystery, from the delicious to the poisonous, even those that glow. They're like hidden treasures in the forest." },
-    { statement: "These mushrooms, small yet significant, emerge from the shadows, reminding us of beauty in darkness. Like the forest, every fleeting moment shapes our journey." },
-    { statement: "Like time's guardians, the shrooms silently witness nature's rhythm. They remind us to cherish fleeting moments as they bloom and fade." }
+    { statement: "These fungi, small yet significant, emerge from the shadows, reminding us of beauty in darkness." },
+    { statement: "Like time's guardians, the shrooms silently witness nature's rhythm. Every little instance may shape our journey." }
 ], "shrum");
+const aboutBerries = createDialogue([
+    { statement: "Berries, nature's sweet jewels, each one a tiny burst of flavor and joy. They are like the little joys life offers, waiting to be savored." }
+], "berries");
+const aboutBirds = createDialogue([
+    { statement: "Look at those birds, dancing across the sky! Each one is like a fleeting moment of freedom and grace. This reminds me to be grateful for these experiences." }
+], "birds");
+const riverDia = createDialogue([
+    { statement: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
+    { statement: "It's such a beautiful afternoon, look how the sunlight dances on the water, casting a warm glow over everything." },
+    { statement: "Rami has this way of making you stop and think, you know? It's like a gentle nudge to ponder life's mysteries." },
+    { question: "So, what do you think? Can I ask you some questions before we continue our journey?", answers: ["Yes", "No"] },
+    { question: "How can we spread kindness every day?", answers: ["Just enjoy the present!", "Even a small gesture can brighten someone's day"] },
+    { question: "What can we do to make the world a better place?", answers: ["Try to discover joy in the simple things", "Don't worry too much about that yet"] },
+    { question: "How can we help friends see the bright side of life, even if we might not always see it ourselves?", answers: ["It's important to focus on your own well-being before trying to help others", "Unexpected acts of kindness or just a positive attitude can be a great start"] },
+    { statement: "Thanks for sharing your thoughts! Let's keep exploring, shall we?" },
+], "river");
 
 function start() {
     started = true;
@@ -309,11 +331,15 @@ function start() {
     document.getElementById("uicon").style.zIndex = "0";
     document.getElementById("inputcon").style.display = "none";
     setTimeout(() => {
+        animateBirds();
+    }, 3000);
+    setTimeout(() => {
         let btn = document.createElement("button");
         btn.innerText = "done exploring!";
         btn.id = "btn_continue";
         btn.onclick = () => {
-            window.location.href = "river.html";
+            btn.style.display = "none";
+            nextScene();
         }
         btn.style.transform = "translateX(500%)";
         btn.style.transition = "transform 1s ease-in-out";
@@ -324,12 +350,50 @@ function start() {
         }, 100);
     }, 10000);
 }
+function nextScene() {
+    started = false;
+    scene++;
+    document.getElementById("uicon").style.background = "initial";
+    document.getElementById("uiimg").style.display = "initial";
+    document.getElementById("uicon").style.zIndex = "4";
+    document.getElementById("inputcon").style.display = "flex";
+    document.getElementById("uitxt").innerHTML = "";
+    switch (scene) {
+        case 1:
+            document.getElementById("uiimg").src = "assets/intro.png";
+            break;
+        case 2:
+            document.getElementById("uiimg").src = "assets/river.png";
+            break;
+        case 3:
+            document.getElementById("uiimg").src = "assets/sleep.png";
+            break;
+        default:
+            break;
+    }
+}
 
 function checkEnd() {
     if (bg.getX() == window.innerWidth * (-1) + 256 && fox.getX() == window.innerWidth - 512) {
         end = true
     } else {
         end = false;
+    }
+}
+
+function animateBirds() {
+    document.getElementById("birds").animate([
+        { transform: 'translateX(calc(110vw + 256px))' },
+        { transform: 'translateX(calc(-10vw - 256px))' }
+    ], {
+        duration: window.innerWidth * 3,
+        iterations: 1,
+        delay: 5000
+    });
+    if (scene == 1) {
+        setTimeout(() => {
+            animateBirds();
+        }, window.innerWidth * 3 + 10000);
     }
 }
 
@@ -374,6 +438,7 @@ window.addEventListener('click', (evt) => {
                 aboutMilo.nextDialogue();
                 addSpark();
                 secrets.ucFox = true;
+                player.sympathy++;
             }
             break;
         case "iconfs":
@@ -381,24 +446,38 @@ window.addEventListener('click', (evt) => {
             toggleFullscreen();
             break;
         case "shrum1":
-            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum1) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum1) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
                 secrets.ucShrum1 = true;
             }
             break;
         case "shrum2":
-            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum2) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum2) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
                 secrets.ucShrum2 = true;
             }
             break;
         case "shrum3":
-            if (evt.clientY > window.innerHeight - 300 && !secrets.ucShrum3) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum3) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
                 secrets.ucShrum3 = true;
+            }
+            break;
+        case "berries":
+            if (evt.clientY > window.innerHeight - 300 && !secrets.ucBerries) {
+                spark.animateSpark(evt.clientX, evt.clientY);
+                aboutBerries.nextDialogue();
+                secrets.ucBerries = true;
+            }
+            break;
+        case "birds":
+            if (!secrets.ucBirds) {
+                spark.animateSpark(evt.clientX, evt.clientY);
+                aboutBirds.nextDialogue();
+                secrets.ucBirds = true;
             }
             break;
         default:
@@ -408,9 +487,20 @@ window.addEventListener('click', (evt) => {
         addSpark();
         secrets.uncovered = true;
     }
-    if (!started && evt.target.id != "iconfs" && introDia.getType() == "statement" && evt.target.tagName != "BUTTON") {
+    let dialogue;
+    switch (scene) {
+        case 1:
+            dialogue = introDia;
+            break;
+        case 2:
+            dialogue = riverDia;
+            break;
+        default:
+            break;
+    }
+    if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
-        introDia.nextDialogue();
+        dialogue.nextDialogue();
     } else if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
     }
@@ -423,6 +513,9 @@ function handleClick(id) {
             break;
         case "aboutMilo":
             dialogue = aboutMilo;
+            break;
+        case "river":
+            dialogue = riverDia;
             break;
         default:
             break;
@@ -439,6 +532,25 @@ function handleClick(id) {
             introDia.changeNext("...");
             window.location.href = "gameover.html";
             break;
+        case "river_btn_4_0": // Yes
+            addSpark();
+            break;
+        case "river_btn_4_1": // No
+            riverDia.changeNext("...");
+            window.location.href = "gameover.html";
+            break;
+        case "river_btn_5_0": // Enjoy the present (bad)
+        case "river_btn_6_1": // Don't worry (bad)
+            break;
+        case "river_btn_5_1": // Small gesture (good)
+        case "river_btn_6_0": // Discover joy (good)
+            player.sympathy++;
+            break;
+        case "river_btn_7_1": // Positive attitude (good)
+            player.sympathy++;
+        case "river_btn_7_0": // Focus on yourself (bad)
+            riverDia.changeNext("Thanks for sharing your thoughts, " + player.name + "! Let's keep exploring, shall we?");
+            break;
         default:
             break;
     }
@@ -448,7 +560,7 @@ function handleClick(id) {
     if (document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_1")) {
         document.getElementById(dialogue.getName() + "_btn_" + dialogue.getProgress() + "_1").hidden = true;
     }
-    introDia.nextDialogue();
+    dialogue.nextDialogue();
 }
 function handleInput() {
     document.getElementById("input").hidden = true;
@@ -481,6 +593,7 @@ function handleInput() {
             text = "Hi " + player.name + "! I like your tattoos!";
             break;
         case "angelika":
+        case "angel":
         case "elias":
         case "lisa":
             text = "Konnichiwa " + player.name + "-san! Ogenki desu ka?";
