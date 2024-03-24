@@ -24,7 +24,13 @@
 
 ::selection {
     color: var(--light);
-    background: var(--orange);
+    background
+    
+    : var(--orange);
+}
+
+.through {
+    pointer-events: none;
 }
 
 html {
@@ -53,29 +59,26 @@ html {
     align-items: center;
 }
 
-#fox {
-    width: 256px;
-    position: absolute;
-    top: 55vh;
-    left: 100px;
-    z-index: 1;
-}
 
-#foxSkin {
+#fox {
     background-image: url("/assets/fox.png");
     background-repeat: no-repeat;
     height: 256px;
     width: 1024px;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 55vh;
+        left: 100px;
 }
 
 #spark {
-    width: 96px;
     position: absolute;
+    background-image: url("/assets/spark.png");
+    background-repeat: no-repeat;
+    height: 96px;width: 96px;
+    width: 384px;
     top: 25vh;
     left: 100px;
+    z-index: 3;
 }
 
 #sparkSkin {
@@ -162,6 +165,7 @@ button {
     overflow: hidden;
     text-overflow: ellipsis;
     z-index: 4;
+    pointer-events: all;
 }
 
 button:hover {
@@ -184,6 +188,7 @@ input {
     min-width: 8ch;
     max-width: 34ch;
     z-index: 4;
+    pointer-events: all;
 }
 
 input:hover,
@@ -238,6 +243,3 @@ input::placeholder {
     padding: 0 10px;
 }
 
-.through{
-    pointer-events: none;
-}
