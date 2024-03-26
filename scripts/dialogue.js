@@ -108,8 +108,7 @@ const createDialogue = (script, name) => {
                     addSpark();
                     break;
                 case "river_btn_4_1": // No
-                    changeNext("...");
-                    window.location.href = "gameover.html";
+                    changeNext("That's okay! Let's just continue our journey then...");
                     break;
                 case "river_btn_5_0": // Enjoy the present (bad)
                 case "river_btn_6_1": // Don't worry (bad)
@@ -133,6 +132,9 @@ const createDialogue = (script, name) => {
                 document.getElementById(name + "_btn_" + progress + "_1").hidden = true;
             }
             nextDialogue();
+            if (id == "river_btn_4_1") {
+                changeNext(null);
+            }
         }
 
         function handleInput() {
@@ -185,6 +187,9 @@ const createDialogue = (script, name) => {
                 case "apisana":
                     text = "What an honor to meet the Tekken Master " + player.name + " herself! I'm a big fan!";
                     break;
+                case "silvan":
+                    text = "What does the fox say, " + player.name + "?";
+                    break;
                 case "tamara":
                 case "moon":
                 case "cherry":
@@ -214,7 +219,6 @@ const createDialogue = (script, name) => {
                 case "sawmiya":
                 case "sebi":
                 case "sebastian":
-                case "silvan":
                 case "stefan":
                 case "yanis":
                 case "yannick":
@@ -248,6 +252,27 @@ const createDialogue = (script, name) => {
         changeNext
     };
 };
+function getCurrentDialogue() {
+    let dialogue;
+    switch (scene) {
+        case 0:
+        case 1:
+            dialogue = introDia;
+            document.getElementById("uiimg").src = "assets/intro.png";
+            break;
+        case 2:
+            dialogue = riverDia;
+            document.getElementById("uiimg").src = "assets/river.png";
+            break;
+        case 3:
+            dialogue = endDia;
+            document.getElementById("uiimg").src = "assets/sleep.png";
+            break;
+        default:
+            break;
+    }
+    return dialogue;
+}
 
 const introDia = createDialogue([
     { statement: "Hey there! I'm Milo, your cheerful explorer buddy!" },
@@ -277,9 +302,13 @@ const riverDia = createDialogue([
     { statement: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
     { statement: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },
     { statement: "Rami has this way of making you stop and think, you know? It's like a gentle nudge to ponder life's mysteries." },
-    { question: "So, what do you think? Can I ask you some questions before we continue our journey?", answers: ["Yes", "No"] },
+    { question: "So, what do you think? Do you wanna share your thoughts on some things before we continue exploring?", answers: ["Yes", "No"] },
     { question: "How can we spread kindness every day?", answers: ["Just enjoy the present!", "Even a small gesture can brighten someone's day"] },
     { question: "What can we do to make the world a better place?", answers: ["Support each other and listen without judgement", "Don't worry too much about that yet"] },
     { question: "How can we help friends see the bright side of life, even if we might not always see it ourselves?", answers: ["Focus on your own well-being before trying to help others", "Just being there for them is a great start"] },
     { statement: "Thanks for sharing your thoughts! Let's keep exploring, shall we?" },
 ], "river");
+const endDia = createDialogue([
+    { statement: "Thank you for joining me on this adventure! I hope you enjoyed our time together." },
+    { statement: "Remember, the forest is always here, waiting for you to explore its wonders. Until next time, my friend!" },
+], "end");

@@ -5,20 +5,33 @@ let started = false;
 let scene = 0; // 1 = forest, 2 = river, 3 = cliff
 let player = {
     name: "Stranger",
-    sparks: 0,
-    sympathy: 0
+    sparks: 0, // 0 - 6
+    sympathy: 0, // 0 - 100
+    ending: 0 // 0 = bad, 1 = neutral, 2 = good
 };
 let secrets = {
-    uncovered: false,
+    uncovered: {
+        all: false,
+        fox: false,
+        shrum1: false,
+        shrum2: false,
+        shrum3: false,
+        berries: false,
+        birds: false
+    },
     count: 5,
     found: 0,
-    ucFox: false,
-    ucShrum1: false,
-    ucShrum2: false,
-    ucShrum3: false,
-    ucBerries: false,
-    ucBirds: false
+    
 }
+
+function updatePlayer() {
+    let url = "http://127.0.0.1:3000/?string=test&number=2";
+    fetch(url)
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
+}
+//updatePlayer();
 
 function start() {
     started = true;
@@ -70,31 +83,22 @@ function nextScene() {
     document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "flex";
     document.getElementById("uitxt").innerHTML = "";
-    switch (scene) {
-        case 1:
-            document.getElementById("uiimg").src = "assets/intro.png";
-            break;
-        case 2:
-            document.getElementById("uiimg").src = "assets/river.png";
-            break;
-        case 3:
-            document.getElementById("uiimg").src = "assets/sleep.png";
-            break;
-        default:
-            break;
-    }
+    
+    getCurrentDialogue().nextDialogue();
 }
-nextScene();
+
 
 function addSpark() {
     let newSpark = document.getElementsByClassName("sparks")[player.sparks];
     console.log(newSpark);
     player.sparks++;
     //animation
+    //spark.animateSpark(window.innerWidth / 2, window.innerHeight / 2, true);
     newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
 }
 
 window.addEventListener('load', function () {
+    document.getElementById("title").style.position = "absolute";
     this.setTimeout(() => {
         document.getElementById("title").animate([
             { opacity: "1" },
@@ -103,7 +107,10 @@ window.addEventListener('load', function () {
             duration: 1000,
             fill: "forwards"
         });
-    }, 100);
+        document.getElementById("fox").style.top = "55vh";
+        document.getElementById("spark").style.top = "25vh";
+    }, 200);
+    nextScene();
 })
 let wheelTimeout = null;
 window.addEventListener('wheel', (evt) => {
@@ -142,81 +149,81 @@ window.addEventListener('click', (evt) => {
     console.log("clicked on: " + evt.target.id);
     switch (evt.target.id) {
         case "fox":
-            if (!secrets.ucFox) {
+            if (!secrets.uncovered.fox) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutMilo.nextDialogue();
                 addSpark();
-                secrets.ucFox = true;
+                secrets.uncovered.fox = true;
                 player.sympathy++;
             }
             break;
-        case "iconElem":
+        case "iconfs":
             spark.animateSpark(evt.clientX, evt.clientY);
             toggleFullscreen();
             break;
         case "shrum1":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum1) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum1) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.ucShrum1 = true;
+                secrets.uncovered.shrum1 = true;
             }
             break;
         case "shrum2":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum2) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum2) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.ucShrum2 = true;
+                secrets.uncovered.shrum2 = true;
             }
             break;
         case "shrum3":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.ucShrum3) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum3) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.ucShrum3 = true;
+                secrets.uncovered.shrum3 = true;
             }
             break;
         case "berries":
-            if (evt.clientY > window.innerHeight - 300 && !secrets.ucBerries) {
+            if (evt.clientY > window.innerHeight - 300 && !secrets.uncovered.berries) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutBerries.nextDialogue();
-                secrets.ucBerries = true;
+                secrets.uncovered.berries = true;
             }
             break;
         case "birds":
-            if (!secrets.ucBirds) {
+            if (!secrets.uncovered.birds) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutBirds.nextDialogue();
-                secrets.ucBirds = true;
+                secrets.uncovered.birds = true;
             }
             break;
         default:
             break;
     }
-    if (secrets.found == secrets.count && !secrets.uncovered) {
+    if (secrets.found == secrets.count && !secrets.uncovered.all) {
         addSpark();
-        secrets.uncovered = true;
+        secrets.uncovered.all = true;
     }
-    let dialogue;
-    switch (scene) {
-        case 1:
-            dialogue = introDia;
-            break;
-        case 2:
-            dialogue = riverDia;
-            break;
-        default:
-            break;
-    }
-    if (!started && evt.target.id != "iconElem" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
+    let dialogue = getCurrentDialogue();
+    if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY, true);
         dialogue.nextDialogue();
-    } else if (evt.target.tagName == "BUTTON") {
+    }
+    if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
+    }
+});
+window.addEventListener('keydown', (evt) => {
+    let dialogue = getCurrentDialogue();
+    if (evt.key == "Enter" || evt.key == " ") {
+        if (!started && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
+            spark.animateSpark(window.innerWidth - 100, window.innerHeight * 0.75, true);
+            dialogue.nextDialogue();
+        }
     }
 });
 
 let fullscreen = false;
-let iconElem = document.getElementById("iconElem");
+let iconElem = document.getElementById("iconfs");
 let docElem = document.documentElement;
 function toggleFullscreen() {
     if (fullscreen) {
