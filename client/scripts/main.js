@@ -31,7 +31,7 @@ function updatePlayer() {
         .then(data => console.log(data))
         .catch(error => console.log(error));
 }
-//updatePlayer();
+updatePlayer();
 
 function start() {
     started = true;
