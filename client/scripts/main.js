@@ -25,7 +25,7 @@ let secrets = {
 }
 
 function updatePlayer() {
-    let url = "http://127.0.0.1:3000/?string=test&number=2";
+    let url = "http://127.0.0.1:3000/?string=yay&number=123";
     fetch(url)
         .then(response => response.json())
         .then(data => console.log(data))
@@ -215,7 +215,7 @@ window.addEventListener('click', (evt) => {
 window.addEventListener('keydown', (evt) => {
     let dialogue = getCurrentDialogue();
     if (evt.key == "Enter" || evt.key == " ") {
-        if (!started && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
+        if (!started && dialogue.getType() == "statement") {
             spark.animateSpark(window.innerWidth - 100, window.innerHeight * 0.75, true);
             dialogue.nextDialogue();
         }

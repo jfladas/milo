@@ -238,6 +238,29 @@ const createDialogue = (script, name) => {
             if (player.name != "Stranger") {
                 addSpark();
             }
+            /*
+            let url = "http://127.0.0.1:3000/player/?name=" + player.name;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(error));
+            */
+            var request = require('request');
+            function updateClient(postData) {
+                var clientServerOptions = {
+                    uri: 'http://' + clientHost + '' + clientContext,
+                    body: JSON.stringify(postData),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+                request(clientServerOptions, function (error, response) {
+                    console.log(error, response.body);
+                    return;
+                });
+            }
+            updateClient(player);
         }
     }
 

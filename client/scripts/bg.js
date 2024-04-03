@@ -61,5 +61,5 @@ const createPrlx = (elem, factor, pos) => {
 let prlxItems = [];
 let els = document.getElementsByClassName("prlx");
 Array.prototype.forEach.call(els, function (el) {
-    prlxItems.push(createPrlx(el, el.getAttribute("data-prlx-factor"), el.getAttribute("data-prlx-pos")));
+    prlxItems.push(createPrlx(el, el.getAttribute("factor"), el.getAttribute("pos")));
 });

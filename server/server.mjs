@@ -44,6 +44,49 @@ app.get('/', (req, res) => {
     }
   });
 });
+/*
+app.get('/player', (req, res) => {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Lese File
+  fs.readFile('results.json', 'utf8', (err, data) => {
+    let results = [];
+    let newName = '';
+    let newObj = {};
+
+    if (err) {
+      console.log('Error: ' + err);
+      res.write('Error: ' + err);
+      return;
+    } else {
+      results = JSON.parse(data);
+      newName = req.query.name;
+      newObj = { 'name': newName };
+      results.push(newObj);
+      res.json(results);
+
+
+
+      fs.writeFile('results.json', JSON.stringify(results), (err) => {
+        if (err) {
+          console.log('Error: ' + err);
+          res.write('Error: ' + err);
+        } else {
+          console.log('Wrote new Results: ' + JSON.stringify(newObj));
+        }
+      });
+    }
+  });
+});
+*/
+
+app.post('/sample/put/data', function (req, res) {
+  console.log('receiving data ...');
+  console.log('body is ', req.body);
+  res.send(req.body);
+});
 
 app.listen(port, () => {
   console.log('Server is running on port ' + port + '...');
