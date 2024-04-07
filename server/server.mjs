@@ -1,8 +1,12 @@
 import * as fs from 'fs';
 import express from 'express';
+//import bodyParser from 'body-parser';
 
 const app = express()
 const port = 3000;
+
+//app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
 
@@ -82,10 +86,9 @@ app.get('/player', (req, res) => {
 });
 */
 
-app.post('/sample/put/data', function (req, res) {
-  console.log('receiving data ...');
-  console.log('body is ', req.body);
-  res.send(req.body);
+app.post('/post', (req, res) => {
+  let data = req.body;
+  res.send('Data Received: ' + JSON.stringify(data));
 });
 
 app.listen(port, () => {

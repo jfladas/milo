@@ -2,16 +2,15 @@
 const createDialogue = (script, name) => {
     let progress = 0;
     let nxttxt = null;
-    let type = "statement";
 
     function nextDialogue() {
         nxttxt = next();
+        progress++;
         if (nxttxt != null) {
             document.getElementById("uitxt").innerText = nxttxt.text;
             if (this == aboutMilo || this == aboutShrums || this == aboutBerries || this == aboutBirds) {
                 let nowtxt = nxttxt.text;
                 setTimeout(() => {
-                    console.log(document.getElementById("uitxt").innerText, nowtxt, document.getElementById("uitxt").innerText == nowtxt);
                     if (document.getElementById("uitxt").innerText == nowtxt) {
                         document.getElementById("uitxt").innerText = "";
                     }
@@ -20,7 +19,7 @@ const createDialogue = (script, name) => {
                     secrets.found++;
                 }
             }
-            if (nxttxt.type == "question") {
+            if (nxttxt.answers) {
                 if (this == introDia && progress == 3) {
                     let input = document.createElement("input");
                     input.type = "text";
@@ -74,21 +73,22 @@ const createDialogue = (script, name) => {
             if (progress >= script.length) {
                 return null; // End of dialogue
             }
-
-            const current = script[progress];
-            progress++;
-
+            return script[progress];
+            //const current = script[progress];
+            /*
             if (current.statement) {
-                type = "statement";
-                return { type: "statement", text: current.statement };
+                return {
+                    type: "statement",
+                    text: current.statement
+                };
             } else if (current.question) {
-                type = "question";
                 return {
                     type: "question",
                     text: current.question,
                     answers: current.answers
                 };
             }
+            */
         }
 
         function handleClick(id) {
@@ -97,7 +97,6 @@ const createDialogue = (script, name) => {
                     handleInput();
                     break;
                 case "intro_btn_5_0": // Yes
-                    changeNext("Yay! Thank you! This is going to be so fun!");
                     addSpark();
                     break;
                 case "intro_btn_5_1": // No
@@ -121,6 +120,11 @@ const createDialogue = (script, name) => {
                     player.sympathy++;
                 case "river_btn_7_0": // Focus on yourself (bad)
                     changeNext("Thanks for sharing your thoughts, " + player.name + "! Let's keep exploring, shall we?");
+                    setTimeout(() => {
+                        if(player.sympathy >= 3) {
+                            addSpark();
+                        }
+                    }, 500);
                     break;
                 default:
                     break;
@@ -244,34 +248,47 @@ const createDialogue = (script, name) => {
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.log(error));
-            */
-            var request = require('request');
-            function updateClient(postData) {
-                var clientServerOptions = {
-                    uri: 'http://' + clientHost + '' + clientContext,
-                    body: JSON.stringify(postData),
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+            
+            fetch("http://127.0.0.1:3000/post", {
+                method: "POST",
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    userId: 1,
+                    title: "Fix my bugs",
+                    completed: false
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
                 }
-                request(clientServerOptions, function (error, response) {
-                    console.log(error, response.body);
-                    return;
-                });
-            }
-            updateClient(player);
+            })
+                .then((response) => response.json())
+                .then((json) => console.log(json))
+                .catch(error => console.log(error));
+
+                */
         }
     }
 
-    function changeNext(statement) {
-        script[progress].statement = statement;
+    function changeNext(txt) {
+        if (txt == null) {
+            script[progress] = null;
+        } else {
+            if (script[progress].answers) {
+                script[progress].answers = null;
+            }
+            script[progress].text = txt;
+        }
     }
 
     return {
         nextDialogue,
-        getProgress: () => progress,
-        getType: () => type,
+        getType: function() {
+            if (script[progress-1].answers) {
+                return "question";
+            } else {
+                return "statement";
+            }
+        },
         changeNext
     };
 };
@@ -298,40 +315,40 @@ function getCurrentDialogue() {
 }
 
 const introDia = createDialogue([
-    { statement: "Hey there! I'm Milo, your cheerful explorer buddy!" },
-    { statement: "I love spending time with kind folks like you, and I'm thrilled to embark on this adventure together!" },
-    { question: "Oh, and what's your name, friend? I'd love to know!", answers: ["...is my Name"] },
-    { statement: "You don't wanna tell me? Thats okay..." },
-    { question: "Do you want to help me uncover the wonders of this forest?", answers: ["Yes", "No"] },
-    { statement: "Yay! Thank you! This is going to be so fun!" },
-    { statement: "Click on interesting things to hear me share little tales about them. Exploring the woods together with you would make me very happy!" },
-    { statement: "And don't forget, scrolling moves us forward or backward. Let's make today unforgettable!" },
+    { text: "Hey there! I'm Milo, your cheerful explorer buddy!" },
+    { text: "I love spending time with kind folks like you, and I'm thrilled to embark on this adventure together!" },
+    { text: "Oh, and what's your name, friend? I'd love to know!", answers: ["...is my Name"] },
+    { text: "You don't wanna tell me? Thats okay..." },
+    { text: "Do you want to help me uncover the wonders of this forest?", answers: ["Yes", "No"] },
+    { text: "Yay! Thank you! This is going to be so fun!" },
+    { text: "Click on interesting things to hear me share little tales about them. Exploring the woods together with you would make me very happy!" },
+    { text: "And don't forget, scrolling moves us forward or backward. Let's make today unforgettable!" },
 ], "intro");
 const aboutMilo = createDialogue([
-    { statement: "Oh, me? Well, I'm Milo, the friendly fox. I've roamed these woods for as long as I can remember, always on the lookout for new adventures and hidden secrets." },
+    { text: "Oh, me? Well, I'm Milo, the friendly fox. I've roamed these woods for as long as I can remember, always on the lookout for new adventures and hidden secrets." },
 ], "milo");
 const aboutShrums = createDialogue([
-    { statement: "Ah, mushrooms! Each one holds a mystery, from the delicious to the poisonous, even those that glow. They're like hidden treasures in the forest." },
-    { statement: "These fungi, small yet significant, emerge from the shadows, reminding us of beauty in darkness." },
-    { statement: "Like time's guardians, the shrooms silently witness nature's rhythm. Every little instance may shape our journey." }
+    { text: "Ah, mushrooms! Each one holds a mystery, from the delicious to the poisonous, even those that glow. They're like hidden treasures in the forest." },
+    { text: "These fungi, small yet significant, emerge from the shadows, reminding us of beauty in darkness." },
+    { text: "Like time's guardians, the shrooms silently witness nature's rhythm. Every little instance may shape our journey." }
 ], "shrum");
 const aboutBerries = createDialogue([
-    { statement: "Berries, nature's sweet jewels, each one a tiny burst of flavor and joy. They are like the little joys life offers, waiting to be savored." }
+    { text: "Berries, nature's sweet jewels, each one a tiny burst of flavor and joy. They are like the little joys life offers, waiting to be savored." }
 ], "berries");
 const aboutBirds = createDialogue([
-    { statement: "Look at those birds, dancing across the sky! Each one is like a fleeting moment of freedom and grace. This reminds me to be grateful for these experiences." }
+    { text: "Look at those birds, dancing across the sky! Each one is like a fleeting moment of freedom and grace. This reminds me to be grateful for these experiences." }
 ], "birds");
 const riverDia = createDialogue([
-    { statement: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
-    { statement: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },
-    { statement: "Rami has this way of making you stop and think, you know? It's like a gentle nudge to ponder life's mysteries." },
-    { question: "So, what do you think? Do you wanna share your thoughts on some things before we continue exploring?", answers: ["Yes", "No"] },
-    { question: "How can we spread kindness every day?", answers: ["Just enjoy the present!", "Even a small gesture can brighten someone's day"] },
-    { question: "What can we do to make the world a better place?", answers: ["Support each other and listen without judgement", "Don't worry too much about that yet"] },
-    { question: "How can we help friends see the bright side of life, even if we might not always see it ourselves?", answers: ["Focus on your own well-being before trying to help others", "Just being there for them is a great start"] },
-    { statement: "Thanks for sharing your thoughts! Let's keep exploring, shall we?" },
+    { text: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
+    { text: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },
+    { text: "Rami has this way of making you stop and think, you know? It's like a gentle nudge to ponder life's mysteries." },
+    { text: "So, what do you think? Do you wanna share your thoughts on some things before we continue exploring?", answers: ["Yes", "No"] },
+    { text: "How can we spread kindness every day?", answers: ["Just enjoy the present!", "Even a small gesture can brighten someone's day"] },
+    { text: "What can we do to make the world a better place?", answers: ["Support each other and listen without judgement", "Don't worry too much about that yet"] },
+    { text: "How can we help friends see the bright side of life, even if we might not always see it ourselves?", answers: ["Focus on your own well-being before trying to help others", "Just being there for them is a great start"] },
+    { text: "Thanks for sharing your thoughts! Let's keep exploring, shall we?" },
 ], "river");
 const endDia = createDialogue([
-    { statement: "Thank you for joining me on this adventure! I hope you enjoyed our time together." },
-    { statement: "Remember, the forest is always here, waiting for you to explore its wonders. Until next time, my friend!" },
+    { text: "Thank you for joining me on this adventure! I hope you enjoyed our time together." },
+    { text: "Remember, the forest is always here, waiting for you to explore its wonders. Until next time, my friend!" },
 ], "end");

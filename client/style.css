@@ -242,3 +242,20 @@ input::placeholder {
     padding: 0 10px;
 }
 
+#overlaycon {
+    position: absolute;
+    top: 50vh;
+    left: 70vw;
+    height: 50vh;
+    width: 30vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sp{
+    height: 10vh;
+    width: 10vh;
+    opacity: 0;
+    z-index: 6;
+}

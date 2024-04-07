@@ -6,8 +6,8 @@ let scene = 0; // 1 = forest, 2 = river, 3 = cliff
 let player = {
     name: "Stranger",
     sparks: 0, // 0 - 6
-    sympathy: 0, // 0 - 100
-    ending: 0 // 0 = bad, 1 = neutral, 2 = good
+    sympathy: 0, // 0 - 3
+    ending: -1 // 0 = bad, 1 = neutral, 2 = good, -1 = none
 };
 let secrets = {
     uncovered: {
@@ -90,10 +90,16 @@ function nextScene() {
 
 function addSpark() {
     let newSpark = document.getElementsByClassName("sparks")[player.sparks];
-    console.log(newSpark);
     player.sparks++;
     //animation
     //spark.animateSpark(window.innerWidth / 2, window.innerHeight / 2, true);
+    document.getElementById("sp").animate([
+        { opacity: "0.5", transform: "scale(0)"},
+        { opacity: "0", transform: "scale(50)"}
+    ], {
+        duration: 700,
+        easing: "ease-in",
+    });
     newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
 }
 
@@ -154,7 +160,6 @@ window.addEventListener('click', (evt) => {
                 aboutMilo.nextDialogue();
                 addSpark();
                 secrets.uncovered.fox = true;
-                player.sympathy++;
             }
             break;
         case "iconfs":
