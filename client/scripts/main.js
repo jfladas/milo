@@ -24,6 +24,9 @@ let secrets = {
     
 }
 
+//working get request
+
+/*
 function updatePlayer() {
     let url = "http://127.0.0.1:3000/?string=yay&number=123";
     fetch(url)
@@ -32,13 +35,16 @@ function updatePlayer() {
         .catch(error => console.log(error));
 }
 updatePlayer();
-
+*/
 function start() {
     started = true;
     document.getElementById("uicon").style.background = "none";
     document.getElementById("uiimg").style.display = "none";
-    document.getElementById("uicon").style.zIndex = "0";
+    document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "none";
+    if (scene == 2) {
+        document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 20%)";
+    }
     setTimeout(() => {
         animateBirds();
     }, 3000);
@@ -225,6 +231,13 @@ window.addEventListener('keydown', (evt) => {
             dialogue.nextDialogue();
         }
     }
+});
+window.addEventListener('mousemove', (evt) => {
+    let light = document.getElementById("light");
+    let lightWidth = 200 * window.innerWidth / 100;
+    let lightHeight = 200 * window.innerHeight / 100;
+    light.style.left = (evt.clientX - lightWidth / 2) + 'px';
+    light.style.top = (evt.clientY - lightHeight / 2) + 'px';
 });
 
 let fullscreen = false;

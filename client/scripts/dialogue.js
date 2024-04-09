@@ -101,13 +101,16 @@ const createDialogue = (script, name) => {
                     break;
                 case "intro_btn_5_1": // No
                     changeNext("...");
-                    window.location.href = "gameover.html";
+                    setTimeout(() => {
+                        window.location.href = "gameover.html";
+                    }, 500);
+                    //gameover
                     break;
                 case "river_btn_4_0": // Yes
                     addSpark();
                     break;
                 case "river_btn_4_1": // No
-                    changeNext("That's okay! Let's just continue our journey then...");
+                    changeNext("That's okay! Let's just continue our journey then,  it's getting pretty dark already anyways...");
                     break;
                 case "river_btn_5_0": // Enjoy the present (bad)
                 case "river_btn_6_1": // Don't worry (bad)
@@ -119,7 +122,7 @@ const createDialogue = (script, name) => {
                 case "river_btn_7_1": // Be there for them (good)
                     player.sympathy++;
                 case "river_btn_7_0": // Focus on yourself (bad)
-                    changeNext("Thanks for sharing your thoughts, " + player.name + "! Let's keep exploring, shall we?");
+                    changeNext("Thanks for sharing your thoughts, " + player.name + "! Let's keep exploring, shall we? It's getting pretty dark already...");
                     setTimeout(() => {
                         if(player.sympathy >= 3) {
                             addSpark();
@@ -248,7 +251,9 @@ const createDialogue = (script, name) => {
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.log(error));
+            */
             
+            /*
             fetch("http://127.0.0.1:3000/post", {
                 method: "POST",
                 mode: 'no-cors',
@@ -261,10 +266,9 @@ const createDialogue = (script, name) => {
                     "Content-type": "application/json; charset=UTF-8"
                 }
             })
-                .then((response) => response.json())
-                .then((json) => console.log(json))
-                .catch(error => console.log(error));
-
+                .then(response => response.text()) // Parse response as text
+                .then(text => console.log(text)) // Log the text response
+                .catch(error => console.log("Error: " + error));
                 */
         }
     }
@@ -346,7 +350,7 @@ const riverDia = createDialogue([
     { text: "How can we spread kindness every day?", answers: ["Just enjoy the present!", "Even a small gesture can brighten someone's day"] },
     { text: "What can we do to make the world a better place?", answers: ["Support each other and listen without judgement", "Don't worry too much about that yet"] },
     { text: "How can we help friends see the bright side of life, even if we might not always see it ourselves?", answers: ["Focus on your own well-being before trying to help others", "Just being there for them is a great start"] },
-    { text: "Thanks for sharing your thoughts! Let's keep exploring, shall we?" },
+    { text: "Thanks for sharing your thoughts! Let's keep exploring, shall we? It's getting pretty dark already..." },
 ], "river");
 const endDia = createDialogue([
     { text: "Thank you for joining me on this adventure! I hope you enjoyed our time together." },

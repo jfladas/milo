@@ -5,6 +5,8 @@ import express from 'express';
 const app = express()
 const port = 3000;
 
+app.use(express.json());
+
 //app.use(bodyParser.json())
 //app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -88,6 +90,8 @@ app.get('/player', (req, res) => {
 
 app.post('/post', (req, res) => {
   let data = req.body;
+  console.log("Data: " + data);
+  //res.json({ message: 'Data Received', data });
   res.send('Data Received: ' + JSON.stringify(data));
 });
 
