@@ -32,7 +32,9 @@ const createDialogue = (script, name) => {
                     input.addEventListener('keydown', (event) => {
                         if (event.key === "Enter") {
                             handleInput();
-                            introDia.nextDialogue();
+                            setTimeout(() => {
+                                introDia.nextDialogue();
+                            }, 100);
                         }
                     });
                     resizeInput.call(input); // immediately call the function
@@ -161,7 +163,7 @@ const createDialogue = (script, name) => {
                     text = "Hey, that's my name! Don't steal it! Just kidding, I'm happy to share it with you!";
                     break;
                 case "jfladas":
-                    text = "That's a weird name... Sounds like an abbreviation... I wonder what it stands for...";
+                    text = "That's a weird name... Sounds like an acronym... I wonder what it stands for...";
                     break;
                 case "lukas":
                     text = "That name sounds familiar... It's like I've heard it before... Oh well! Nice to meet you!";
@@ -302,15 +304,15 @@ function getCurrentDialogue() {
         case 0:
         case 1:
             dialogue = introDia;
-            document.getElementById("uiimg").src = "assets/intro.png";
+            document.getElementById("uiimg").src = "assets/intro2.png";
             break;
         case 2:
             dialogue = riverDia;
-            document.getElementById("uiimg").src = "assets/river.png";
+            document.getElementById("uiimg").src = "assets/river2.png";
             break;
         case 3:
             dialogue = endDia;
-            document.getElementById("uiimg").src = "assets/sleep.png";
+            document.getElementById("uiimg").src = "assets/sleep2.png";
             break;
         default:
             break;

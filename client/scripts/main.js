@@ -43,7 +43,8 @@ function start() {
     document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "none";
     if (scene == 2) {
-        document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 20%)";
+        document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
+        createFlies();
     }
     setTimeout(() => {
         animateBirds();
@@ -210,6 +211,13 @@ window.addEventListener('click', (evt) => {
         default:
             break;
     }
+
+    if (evt.target.classList.contains("fly")) {
+        spark.animateSpark(evt.clientX, evt.clientY);
+        console.log("clicked on fly");
+        //aboutFlies.nextDialogue();
+    }
+
     if (secrets.found == secrets.count && !secrets.uncovered.all) {
         addSpark();
         secrets.uncovered.all = true;

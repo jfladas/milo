@@ -123,6 +123,14 @@ body {
     z-index: 3;
 }
 
+.fly {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    z-index: 10;
+    background: none;
+}
+
 .prlx {
     position: absolute;
     height: 75vh;
