@@ -4,7 +4,11 @@ const createDialogue = (script, name) => {
     let nxttxt = null;
 
     function nextDialogue() {
-        nxttxt = next();
+        if (progress >= script.length) {
+            nxttxt = null; // End of dialogue
+        } else {
+            nxttxt = script[progress];
+        }
         progress++;
         if (nxttxt != null) {
             document.getElementById("uitxt").innerText = nxttxt.text;
@@ -69,28 +73,7 @@ const createDialogue = (script, name) => {
             if (this == introDia || this == riverDia) {
                 start();
             }
-        }
-
-        function next() {
-            if (progress >= script.length) {
-                return null; // End of dialogue
-            }
-            return script[progress];
-            //const current = script[progress];
-            /*
-            if (current.statement) {
-                return {
-                    type: "statement",
-                    text: current.statement
-                };
-            } else if (current.question) {
-                return {
-                    type: "question",
-                    text: current.question,
-                    answers: current.answers
-                };
-            }
-            */
+            //TODO: end game
         }
 
         function handleClick(id) {
@@ -106,7 +89,7 @@ const createDialogue = (script, name) => {
                     setTimeout(() => {
                         window.location.href = "gameover.html";
                     }, 500);
-                    //gameover
+                    //TODO: gameover
                     break;
                 case "river_btn_4_0": // Yes
                     addSpark();
@@ -247,6 +230,9 @@ const createDialogue = (script, name) => {
             if (player.name != "Stranger") {
                 addSpark();
             }
+
+            //TODO: player data with post (or get)
+
             /*
             let url = "http://127.0.0.1:3000/player/?name=" + player.name;
             fetch(url)
@@ -298,6 +284,8 @@ const createDialogue = (script, name) => {
         changeNext
     };
 };
+
+//TODO: make this prettier
 function getCurrentDialogue() {
     let dialogue;
     switch (scene) {
@@ -344,6 +332,7 @@ const aboutBerries = createDialogue([
 const aboutBirds = createDialogue([
     { text: "Look at those birds, dancing across the sky! Each one is like a fleeting moment of freedom and grace. This reminds me to be grateful for these experiences." }
 ], "birds");
+//TODO: add more dialogues (flies,...)
 const riverDia = createDialogue([
     { text: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
     { text: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },

@@ -9,6 +9,7 @@ let player = {
     sympathy: 0, // 0 - 3
     ending: -1 // 0 = bad, 1 = neutral, 2 = good, -1 = none
 };
+//TODO: adapt to day/night secrets
 let secrets = {
     uncovered: {
         all: false,
@@ -17,7 +18,8 @@ let secrets = {
         shrum2: false,
         shrum3: false,
         berries: false,
-        birds: false
+        birds: false,
+        flies: false
     },
     count: 5,
     found: 0,
@@ -36,6 +38,7 @@ function updatePlayer() {
 }
 updatePlayer();
 */
+
 function start() {
     started = true;
     document.getElementById("uicon").style.background = "none";
@@ -43,8 +46,10 @@ function start() {
     document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "none";
     if (scene == 2) {
+        //TODO: reset position of fox and bg
         document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
         createFlies();
+        //TODO: alter and add parallax elements for night
     }
     setTimeout(() => {
         animateBirds();
@@ -91,15 +96,26 @@ function nextScene() {
     document.getElementById("inputcon").style.display = "flex";
     document.getElementById("uitxt").innerHTML = "";
     
-    getCurrentDialogue().nextDialogue();
+    let dialogue = getCurrentDialogue();
+    let img = document.getElementById("uiimg").src;
+    switch (dialogue) {
+        case introDia:
+            img = "assets/intro2.png";
+            break;
+        case riverDia:
+            img = "assets/river2.png";
+            break;
+        case endDia:
+            img = "assets/sleep2.png";
+            break;
+    }
+    dialogue.nextDialogue();
 }
 
 
 function addSpark() {
     let newSpark = document.getElementsByClassName("sparks")[player.sparks];
     player.sparks++;
-    //animation
-    //spark.animateSpark(window.innerWidth / 2, window.innerHeight / 2, true);
     document.getElementById("sp").animate([
         { opacity: "0.5", transform: "scale(0)"},
         { opacity: "0", transform: "scale(50)"}
@@ -107,6 +123,7 @@ function addSpark() {
         duration: 700,
         easing: "ease-in",
     });
+    //TODO: better spark animation
     newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
 }
 
@@ -160,6 +177,7 @@ window.addEventListener('wheel', (evt) => {
 window.addEventListener('click', (evt) => {
 
     console.log("clicked on: " + evt.target.id);
+    //TODO: prettier please
     switch (evt.target.id) {
         case "fox":
             if (!secrets.uncovered.fox) {
@@ -213,9 +231,12 @@ window.addEventListener('click', (evt) => {
     }
 
     if (evt.target.classList.contains("fly")) {
-        spark.animateSpark(evt.clientX, evt.clientY);
-        console.log("clicked on fly");
-        //aboutFlies.nextDialogue();
+        if(!secrets.uncovered.flies) {
+            spark.animateSpark(evt.clientX, evt.clientY);
+            console.log("clicked on fly");
+            //aboutFlies.nextDialogue();
+            secrets.uncovered.flies = true;
+        }
     }
 
     if (secrets.found == secrets.count && !secrets.uncovered.all) {

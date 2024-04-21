@@ -1,3 +1,5 @@
+//TODO: fly away on hover
+
 // Firefly factory function
 const createFly = (elem) => {
     let x = window.innerWidth * 0.75 + Math.random() * 100 - 50;
