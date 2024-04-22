@@ -1,30 +1,26 @@
-//TODO: fly away on hover
-
 // Firefly factory function
 const createFly = (elem) => {
     let x = window.innerWidth * 0.75 + Math.random() * 100 - 50;
     let y = window.innerHeight * -0.25 + Math.random() * 100 - 50;
+    
+    let away = false;
+
     const flyAnim = elem.animate(null, { duration: 500 });
 
     const animateFly = () => {
         nx = x + Math.random() * 30 - 15;
         ny = y + Math.random() * 30 - 15;
-        /*
-        if (nx < 0) {
-            nx = 0;
-        } else if (nx > window.innerWidth) {
-            nx = window.innerWidth;
+        if (away) {
+            away = false;
+            nx = x + Math.random() * 300 - 150;
+            ny = y + Math.random() * 300 - 150;
         }
-        if (ny < window.innerHeight * -0.5) {
-            ny = 0;
-        } else if (ny > window.innerHeight * 0.5) {
-            ny = window.innerHeight;
-        }*/
         
         let keyframes = [
             { transform: 'translate(' + x + 'px, ' + y + 'px)' },
             { transform: 'translate(' + nx + 'px, ' + ny + 'px)' },
         ];
+        
         x = nx;
         y = ny;
         flyAnim.effect.setKeyframes(keyframes);
@@ -35,22 +31,26 @@ const createFly = (elem) => {
 
     return {
         animateFly,
-        getElem : () => elem
+        getElem: () => elem,
+        setAway: (a) => away = a
     };
 };
 
-const count = 10;
+const count = 7;
 let flies = [];
 function createFlies() {
     for (let i = 0; i < count; i++) {
         const fly = document.createElement("div");
         fly.classList.add("fly");
-
         document.getElementById("prlxcon").appendChild(fly);
         flies.push(createFly(fly));
-        flies[i].animateFly();
+        setTimeout(() => {
+            flies[i].animateFly();
+        }, Math.random() * 10);
+        fly.addEventListener("mouseenter", () => {
+            flies[i].setAway(true);
+        });
     }
-    //let els = document.getElementsByClassName("fly");
     Array.prototype.forEach.call(flies, function (f) {
         el = f.getElem();
         el.style.background = "radial-gradient(circle at center, #C6AE33AA, transparent 50%)";
