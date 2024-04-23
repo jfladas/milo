@@ -5,8 +5,8 @@ const createFox = (elem) => {
     const foxAnim = elem.animate(null, { duration: 500, easing: 'steps(4)' });
 
     const animateFox = () => {
-        if (x < (0)) {
-            x = (0);
+        if (x < 0) {
+            x = 0;
         } else if (x > window.innerWidth - 512) {
             x = window.innerWidth - 512;
         }
@@ -47,6 +47,11 @@ const createFox = (elem) => {
 
     return {
         getX: () => x,
+        setX: (nx) => {
+            x = nx
+            rev = false;
+            animateFox();
+        },
         animateFox
     };
 };

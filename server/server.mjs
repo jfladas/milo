@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   // Lese File
-  fs.readFile('results.json', 'utf8', (err, data) => {
-    let results = [];
+  fs.readFile('data.json', 'utf8', (err, data) => {
+    let data = [];
     let newString = '';
     let newNumber = 0;
     let newObj = {};
@@ -27,17 +27,17 @@ app.get('/', (req, res) => {
       res.write('Error: ' + err);
       return;
     } else {
-      results = JSON.parse(data);
+      data = JSON.parse(data);
       newString = req.query.string;
       newNumber = Number(req.query.number);
       // Neuer Score in Array einfügen
       newObj = {'string': newString, 'number': newNumber};
-      results.push(newObj);
-      res.json(results);
+      data.push(newObj);
+      res.json(data);
  
       
       
-      fs.writeFile('results.json', JSON.stringify(results) , (err) => {
+      fs.writeFile('data.json', JSON.stringify(data) , (err) => {
         if (err){
           console.log('Error: ' + err);
           res.write('Error: ' + err);

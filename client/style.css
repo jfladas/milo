@@ -33,6 +33,7 @@
 }
 
 body {
+    position: fixed;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -40,7 +41,7 @@ body {
 }
 
 #title {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -53,7 +54,7 @@ body {
 }
 
 #bgcon {
-    position: absolute;
+    position: fixed;
     overflow-x: hidden;
     height: 100vh;
     width: 100vw;
@@ -147,7 +148,7 @@ body {
 }
 
 #uicon {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;

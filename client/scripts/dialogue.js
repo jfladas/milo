@@ -24,6 +24,7 @@ const createDialogue = (script, name) => {
                 }
             }
             if (nxttxt.answers) {
+                questionSound.play();
                 if (this == introDia && progress == 3) {
                     let input = document.createElement("input");
                     input.type = "text";
@@ -67,6 +68,8 @@ const createDialogue = (script, name) => {
                         btn.style.transform = "translateX(0)";
                     }, 100);
                 }
+            } else {
+                statementSound.play();
             }
         } else {
             document.getElementById("uitxt").innerText = "";

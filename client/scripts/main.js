@@ -25,9 +25,51 @@ let secrets = {
     found: 0,
     
 }
+let soundPlaying = false;
+let introSound = document.getElementById("introsound");
+//fadeAudio(introSound);
+//let loopSound = document.getElementById("loopsound");
+let statementSound = document.getElementById("statementsound");
+let questionSound = document.getElementById("questionsound");
+let sparkSound = document.getElementById("sparksound");
+sparkSound.volume = 0.1;
+
+/*
+fadeAudio(introSound);
+fadeAudio(loopSound);
+introSound.addEventListener('timeupdate', () => {
+    let buffer = 0.5;
+    if (introSound.currentTime > introSound.duration - buffer) {
+        loopSound.play();
+    }
+});
+loopSound.addEventListener('timeupdate', () => {
+    let buffer = 0.5;
+    if (loopSound.currentTime > loopSound.duration - buffer) {
+        loopSound.currentTime = 0;
+        loopSound.play();
+    }
+});
+
+
+function fadeAudio(sound) {
+    let fadePoint = sound.duration - 2;
+
+    let fade = setInterval(() => {
+
+        if ((sound.currentTime >= fadePoint) && (sound.volume != 0.0)) {
+            sound.volume -= 0.1;
+        }
+        if (sound.volume === 0.0) {
+            clearInterval(fade);
+        }
+    }, 200);
+}
+*/
+
+
 
 //working get request
-
 /*
 function updatePlayer() {
     let url = "http://127.0.0.1:3000/?string=yay&number=123";
@@ -41,12 +83,13 @@ updatePlayer();
 
 function start() {
     started = true;
+    fox.setX(0);
+    bg.setX(0);
     document.getElementById("uicon").style.background = "none";
     document.getElementById("uiimg").style.display = "none";
     document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "none";
     if (scene == 2) {
-        //TODO: reset position of fox and bg
         document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
         createFlies();
         //TODO: alter and add parallax elements for night
@@ -112,6 +155,16 @@ function nextScene() {
     dialogue.nextDialogue();
 }
 
+// create spark counter ui
+for (let i = 0; i < 6; i++) {
+    let div = document.createElement('div');
+    div.className = 'sparks';
+    if (i == 0) {
+        div.style.marginRight = '20px';
+    }
+    document.getElementById('spcon').appendChild(div);
+}
+
 
 function addSpark() {
     let newSpark = document.getElementsByClassName("sparks")[player.sparks];
@@ -125,6 +178,7 @@ function addSpark() {
     });
     //TODO: better spark animation
     newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
+    sparkSound.play();
 }
 
 window.addEventListener('load', function () {
@@ -247,6 +301,10 @@ window.addEventListener('click', (evt) => {
     if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY, true);
         dialogue.nextDialogue();
+        if (dialogue == introDia && !soundPlaying) {
+            soundPlaying = true;
+            introSound.play();
+        }
     }
     if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
