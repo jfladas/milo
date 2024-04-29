@@ -11,19 +11,27 @@ let player = {
 };
 //TODO: adapt to day/night secrets
 let secrets = {
-    uncovered: {
-        all: false,
-        fox: false,
-        shrum1: false,
-        shrum2: false,
-        shrum3: false,
-        berries: false,
-        birds: false,
-        flies: false
+    day: {
+        uncovered: {
+            all: false,
+            fox: false,
+            shrum1: false,
+            shrum2: false,
+            shrum3: false,
+            berries: false,
+            birds: false
+        },
+        count: 5,
+        found: 0,
     },
-    count: 5,
-    found: 0,
-    
+    night: {
+        uncovered: {
+            all: false,
+            flies: false
+        },
+        count: 1,
+        found: 0,
+    }
 }
 let soundPlaying = false;
 let introSound = document.getElementById("introsound");
@@ -234,11 +242,11 @@ window.addEventListener('click', (evt) => {
     //TODO: prettier please
     switch (evt.target.id) {
         case "fox":
-            if (!secrets.uncovered.fox) {
+            if (!secrets.day.uncovered.fox) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutMilo.nextDialogue();
                 addSpark();
-                secrets.uncovered.fox = true;
+                secrets.day.uncovered.fox = true;
             }
             break;
         case "iconfs":
@@ -246,38 +254,38 @@ window.addEventListener('click', (evt) => {
             toggleFullscreen();
             break;
         case "shrum1":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum1) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum1) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.uncovered.shrum1 = true;
+                secrets.day.uncovered.shrum1 = true;
             }
             break;
         case "shrum2":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum2) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum2) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.uncovered.shrum2 = true;
+                secrets.day.uncovered.shrum2 = true;
             }
             break;
         case "shrum3":
-            if (evt.clientY > window.innerHeight - 200 && !secrets.uncovered.shrum3) {
+            if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum3) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutShrums.nextDialogue();
-                secrets.uncovered.shrum3 = true;
+                secrets.day.uncovered.shrum3 = true;
             }
             break;
         case "berries":
-            if (evt.clientY > window.innerHeight - 300 && !secrets.uncovered.berries) {
+            if (evt.clientY > window.innerHeight - 300 && !secrets.day.uncovered.berries) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutBerries.nextDialogue();
-                secrets.uncovered.berries = true;
+                secrets.day.uncovered.berries = true;
             }
             break;
         case "birds":
-            if (!secrets.uncovered.birds) {
+            if (!secrets.day.uncovered.birds) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutBirds.nextDialogue();
-                secrets.uncovered.birds = true;
+                secrets.day.uncovered.birds = true;
             }
             break;
         default:
@@ -285,18 +293,14 @@ window.addEventListener('click', (evt) => {
     }
 
     if (evt.target.classList.contains("fly")) {
-        if(!secrets.uncovered.flies) {
+        if(!secrets.night.uncovered.flies) {
             spark.animateSpark(evt.clientX, evt.clientY);
             console.log("clicked on fly");
-            //aboutFlies.nextDialogue();
-            secrets.uncovered.flies = true;
+            aboutFlies.nextDialogue();
+            secrets.night.uncovered.flies = true;
         }
     }
 
-    if (secrets.found == secrets.count && !secrets.uncovered.all) {
-        addSpark();
-        secrets.uncovered.all = true;
-    }
     let dialogue = getCurrentDialogue();
     if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY, true);

@@ -5,15 +5,15 @@ const createFly = (elem) => {
     
     let away = false;
 
-    const flyAnim = elem.animate(null, { duration: 500 });
+    const flyAnim = elem.animate(null, { duration: 300 });
 
     const animateFly = () => {
-        nx = x + Math.random() * 30 - 15;
-        ny = y + Math.random() * 30 - 15;
+        nx = x + Math.random() * 20 - 10;
+        ny = y + Math.random() * 20 - 10;
         if (away) {
             away = false;
-            nx = x + Math.random() * 300 - 150;
-            ny = y + Math.random() * 300 - 150;
+            nx = x + Math.random() * 200 - 100;
+            ny = y + Math.random() * 200 - 100;
         }
         
         let keyframes = [

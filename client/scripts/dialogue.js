@@ -12,7 +12,7 @@ const createDialogue = (script, name) => {
         progress++;
         if (nxttxt != null) {
             document.getElementById("uitxt").innerText = nxttxt.text;
-            if (this == aboutMilo || this == aboutShrums || this == aboutBerries || this == aboutBirds) {
+            if (this == aboutMilo || this == aboutShrums || this == aboutBerries || this == aboutBirds || this == aboutFlies) {
                 let nowtxt = nxttxt.text;
                 setTimeout(() => {
                     if (document.getElementById("uitxt").innerText == nowtxt) {
@@ -20,7 +20,19 @@ const createDialogue = (script, name) => {
                     }
                 }, 10000);
                 if (this == aboutShrums || this == aboutBerries || this == aboutBirds) {
-                    secrets.found++;
+                    secrets.day.found++;
+                }
+                if (this == aboutFlies) {
+                    secrets.night.found++;
+                }
+
+                if (secrets.day.found == secrets.day.count && !secrets.day.uncovered.all) {
+                    addSpark();
+                    secrets.day.uncovered.all = true;
+                }
+                if (secrets.night.found == secrets.night.count && !secrets.night.uncovered.all) {
+                    addSpark();
+                    secrets.night.uncovered.all = true;
                 }
             }
             if (nxttxt.answers) {
@@ -330,12 +342,15 @@ const aboutShrums = createDialogue([
     { text: "Like time's guardians, the shrooms silently witness nature's rhythm. Every little instance may shape our journey." }
 ], "shrum");
 const aboutBerries = createDialogue([
-    { text: "Berries, nature's sweet jewels, each one a tiny burst of flavor and joy. They are like the little joys life offers, waiting to be savored." }
+    { text: "Berries, nature's sweet jewels, each one a tiny burst of flavor. They are like the little joys life offers, waiting to be savored." }
 ], "berries");
 const aboutBirds = createDialogue([
     { text: "Look at those birds, dancing across the sky! Each one is like a fleeting moment of freedom and grace. This reminds me to be grateful for these experiences." }
 ], "birds");
-//TODO: add more dialogues (flies,...)
+const aboutFlies = createDialogue([
+    { text: "Wow, fireflies! They're like little stars dancing in the night, lighting up the darkness with their enchanting glow. It's like the forest has its own constellation." }
+], "flies");
+//TODO: add more dialogues (...)
 const riverDia = createDialogue([
     { text: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
     { text: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },
