@@ -12,8 +12,8 @@ let player = {
 let secrets = {
     day: {
         uncovered: {
-            all: false,
             fox: false,
+            all: false,
             shrum1: false,
             shrum2: false,
             shrum3: false,
@@ -32,12 +32,14 @@ let secrets = {
         found: 0,
     }
 }
+
+//sound
 let soundPlaying = false;
 let introSound = document.getElementById("introsound");
-//fadeAudio(introSound);
-//let loopSound = document.getElementById("loopsound");
 let statementSound = document.getElementById("statementsound");
+statementSound.volume = 0.7;
 let questionSound = document.getElementById("questionsound");
+questionSound.volume = 0.7;
 let sparkSound = document.getElementById("sparksound");
 sparkSound.volume = 0.1;
 
@@ -55,15 +57,9 @@ updatePlayer();
 
 function start() {
     started = true;
-    fox.setX(0);
-    bg.setX(0);
-    document.getElementById("uicon").style.background = "none";
-    document.getElementById("uiimg").style.display = "none";
-    document.getElementById("uicon").style.zIndex = "4";
-    document.getElementById("inputcon").style.display = "none";
+    
     switch (scene) {
         case 1:
-            //createDayPrlx();
             setTimeout(() => {
                 animateBirds();
             }, 3000);
@@ -71,18 +67,24 @@ function start() {
         case 2:
             document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
             createFlies();
+            createNightPrlx();
             prlxDayItems.forEach(el => {
                 el.removePrlx();
             });
-            //TODO: alter and add parallax elements for night
-            break;
-        case 3:
-            startScene3();
             break;
     }
+
+    fox.setX(0);
+    bg.setX(0);
+    document.getElementById("uicon").style.background = "none";
+    document.getElementById("uiimg").style.display = "none";
+    document.getElementById("uicon").style.zIndex = "4";
+    document.getElementById("inputcon").style.display = "none";
+
+
     setTimeout(() => {
         let btn = document.createElement("button");
-        btn.innerText = "done exploring!";
+        btn.innerText = "done exploring?";
         btn.id = "btn_continue";
         btn.onclick = () => {
             btn.style.display = "none";
@@ -123,7 +125,7 @@ function nextScene() {
     document.getElementById("uitxt").innerHTML = "";
     
     let dialogue = getCurrentDialogue();
-    let img = document.getElementById("uiimg").src;
+    let img;
     switch (dialogue) {
         case introDia:
             img = "assets/intro2.png";
@@ -135,6 +137,7 @@ function nextScene() {
             img = "assets/sleep2.png";
             break;
     }
+    document.getElementById("uiimg").src = img;
     dialogue.nextDialogue();
 }
 
@@ -159,7 +162,6 @@ function addSpark() {
         duration: 700,
         easing: "ease-in",
     });
-    //TODO: better spark animation
     newSpark.style.backgroundImage = "url('assets/sparks_full.png')";
     sparkSound.play();
 }
@@ -216,8 +218,11 @@ window.addEventListener('wheel', (evt) => {
 window.addEventListener('click', (evt) => {
 
     console.log("clicked on: " + evt.target.id);
-    //TODO: prettier please
     switch (evt.target.id) {
+        case "iconfs":
+            spark.animateSpark(evt.clientX, evt.clientY);
+            toggleFullscreen();
+            break;
         case "fox":
             if (!secrets.day.uncovered.fox) {
                 spark.animateSpark(evt.clientX, evt.clientY);
@@ -225,10 +230,6 @@ window.addEventListener('click', (evt) => {
                 addSpark();
                 secrets.day.uncovered.fox = true;
             }
-            break;
-        case "iconfs":
-            spark.animateSpark(evt.clientX, evt.clientY);
-            toggleFullscreen();
             break;
         case "shrum1":
             if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum1) {
@@ -280,7 +281,7 @@ window.addEventListener('click', (evt) => {
 
     let dialogue = getCurrentDialogue();
     if (!started && evt.target.id != "iconfs" && dialogue.getType() == "statement" && evt.target.tagName != "BUTTON") {
-        spark.animateSpark(evt.clientX, evt.clientY, true);
+        spark.animateSpark(evt.clientX, evt.clientY);
         dialogue.nextDialogue();
         if (dialogue == introDia && !soundPlaying) {
             soundPlaying = true;
@@ -289,9 +290,6 @@ window.addEventListener('click', (evt) => {
     }
     if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
-        if (evt.target.id == "intro_btn_3_0") {
-            //TODO: server request
-        }
     }
 });
 window.addEventListener('keydown', (evt) => {

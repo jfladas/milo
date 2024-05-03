@@ -87,8 +87,9 @@ const createDialogue = (script, name) => {
             document.getElementById("uitxt").innerText = "";
             if (this == introDia || this == riverDia) {
                 start();
+            } else if (this == endDia) {
+                //TODO: end game
             }
-            //TODO: end game
         }
 
         function handleClick(id) {
@@ -296,26 +297,23 @@ const createDialogue = (script, name) => {
                 return "statement";
             }
         },
-        changeNext
+        changeNext,
+        getName: () => name
     };
 };
 
-//TODO: make this prettier
 function getCurrentDialogue() {
     let dialogue;
     switch (scene) {
         case 0:
         case 1:
             dialogue = introDia;
-            document.getElementById("uiimg").src = "assets/intro2.png";
             break;
         case 2:
             dialogue = riverDia;
-            document.getElementById("uiimg").src = "assets/river2.png";
             break;
         case 3:
             dialogue = endDia;
-            document.getElementById("uiimg").src = "assets/sleep2.png";
             break;
         default:
             break;
