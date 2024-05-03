@@ -23,7 +23,7 @@ const createBg = (elem) => {
             { transform: 'translateX(' + x + 'px)' }
         ]);
         bgAnim.play();
-        prlxItems.forEach(el => {
+        prlxDayItems.forEach(el => {
             el.animatePrlx(x);
         });
     };
@@ -70,64 +70,38 @@ const createPrlx = (id, src, factor, pos) => {
     };
 
     return {
-        animatePrlx
+        animatePrlx,
+        removePrlx: () => {
+            el.remove();
+        }
     };
 };
 
-const prlxData = [
-    { src: "assets/tree.png", factor: 2, pos: [40, 100] },
-    { src: "assets/bush1.png", factor: 3, pos: [10, 60, 150] },
-    { src: "assets/bush2.png", factor: 3.5, pos: [30, 130, 180] },
-    { id: "berries", src: "assets/berries.png", factor: 4, pos: [100] },
-    { id: "shrum1", src: "assets/shrum1.png", factor: 5, pos: [30] },
-    { id: "shrum2", src: "assets/shrum2.png", factor: 5, pos: [180] },
-    { id: "shrum3", src: "assets/shrum3.png", factor: 5, pos: [240] }
-];
-let prlxItems = [];
-prlxData.forEach(item => {
-    const { id, src, factor, pos } = item;
-    if (pos.length > 1) pos.forEach(p => prlxItems.push(createPrlx(id, src, factor, p)));
-    else prlxItems.push(createPrlx(id, src, factor, pos));
-});
-/*
-function createAndAppendImages(data) {
-    data.forEach(item => {
+let prlxDayItems = [];
+function createDayPrlx() {
+    const prlxDayData = [
+        { src: "assets/tree.png", factor: 2, pos: [40, 100] },
+        { src: "assets/bush1.png", factor: 3, pos: [10, 60, 150] },
+        { src: "assets/bush2.png", factor: 3.5, pos: [30, 130, 180] },
+        { id: "berries", src: "assets/berries.png", factor: 4, pos: [100] },
+        { id: "shrum1", src: "assets/shrum1.png", factor: 5, pos: [30] },
+        { id: "shrum2", src: "assets/shrum2.png", factor: 5, pos: [180] },
+        { id: "shrum3", src: "assets/shrum3.png", factor: 5, pos: [240] }
+    ];
+    prlxDayData.forEach(item => {
         const { id, src, factor, pos } = item;
-        const img = document.createElement("img");
-        img.className = "prlx through";
-        img.draggable = false;
-        img.src = src;
-        img.setAttribute("factor", factor);
-        pos.forEach(p => img.setAttribute("pos", p));
-        if (id) img.id = id;
-        container.appendChild(img);
+        if (pos.length > 1) pos.forEach(p => prlxDayItems.push(createPrlx(id, src, factor, p)));
+        else prlxDayItems.push(createPrlx(id, src, factor, pos));
+    });
+};
+
+let prlxNightItems = [];
+function createNightPrlx() {
+    const prlxNightData = [
+        { src: "assets/tree.png", factor: 2, pos: [40, 100] }
+    ];
+    prlxNightData.forEach(item => {
+        const { src, factor, pos } = item;
+        prlxNightItems.push(createPrlx(null, src, factor, pos));
     });
 }
-
-// Call the function to create and append images
-createAndAppendImages(imagesData);
-
-let prlxItems = [];
-let els = document.getElementsByClassName("prlx");
-Array.prototype.forEach.call(els, function (el) {
-    prlxItems.push(createPrlx(el, el.getAttribute("factor"), el.getAttribute("pos")));
-});
-
-<img class="prlx through" draggable="false" src="assets/tree.png" factor="2" pos="40">
-        <img class="prlx through" draggable="false" src="assets/tree.png" factor="2" pos="100">
-
-        <img class="prlx through" draggable="false" src="assets/bush1.png" factor="3" pos="10">
-        <img class="prlx through" draggable="false" src="assets/bush1.png" factor="3" pos="60">
-        <img class="prlx through" draggable="false" src="assets/bush1.png" factor="3" pos="150">
-
-        <img class="prlx through" draggable="false" src="assets/bush2.png" factor="3.5" pos="30">
-        <img class="prlx through" draggable="false" src="assets/bush2.png" factor="3.5" pos="130">
-        <img class="prlx through" draggable="false" src="assets/bush2.png" factor="3.5" pos="180">
-
-        <img id="berries" class="prlx" draggable="false" src="assets/berries.png" factor="4" pos="100">
-
-        <img id="shrum1" class="prlx" draggable="false" src="assets/shrum1.png" factor="5" pos="30">
-        <img id="shrum2" class="prlx" draggable="false" src="assets/shrum2.png" factor="5" pos="180">
-        <img id="shrum3" class="prlx" draggable="false" src="assets/shrum3.png" factor="5" pos="240">
-
-*/

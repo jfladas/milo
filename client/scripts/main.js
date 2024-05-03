@@ -2,14 +2,13 @@ let scrl = false;
 let rev = false;
 let scrlSpeed = 1;
 let started = false;
-let scene = 0; // 1 = forest, 2 = river, 3 = cliff
+let scene = 0; // 1 = forest, 2 = river & night, 3 = cliff & end
 let player = {
     name: "Stranger",
     sparks: 0, // 0 - 6
     sympathy: 0, // 0 - 3
     ending: -1 // 0 = bad, 1 = neutral, 2 = good, -1 = none
 };
-//TODO: adapt to day/night secrets
 let secrets = {
     day: {
         uncovered: {
@@ -42,41 +41,6 @@ let questionSound = document.getElementById("questionsound");
 let sparkSound = document.getElementById("sparksound");
 sparkSound.volume = 0.1;
 
-/*
-fadeAudio(introSound);
-fadeAudio(loopSound);
-introSound.addEventListener('timeupdate', () => {
-    let buffer = 0.5;
-    if (introSound.currentTime > introSound.duration - buffer) {
-        loopSound.play();
-    }
-});
-loopSound.addEventListener('timeupdate', () => {
-    let buffer = 0.5;
-    if (loopSound.currentTime > loopSound.duration - buffer) {
-        loopSound.currentTime = 0;
-        loopSound.play();
-    }
-});
-
-
-function fadeAudio(sound) {
-    let fadePoint = sound.duration - 2;
-
-    let fade = setInterval(() => {
-
-        if ((sound.currentTime >= fadePoint) && (sound.volume != 0.0)) {
-            sound.volume -= 0.1;
-        }
-        if (sound.volume === 0.0) {
-            clearInterval(fade);
-        }
-    }, 200);
-}
-*/
-
-
-
 //working get request
 /*
 function updatePlayer() {
@@ -97,14 +61,25 @@ function start() {
     document.getElementById("uiimg").style.display = "none";
     document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "none";
-    if (scene == 2) {
-        document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
-        createFlies();
-        //TODO: alter and add parallax elements for night
+    switch (scene) {
+        case 1:
+            //createDayPrlx();
+            setTimeout(() => {
+                animateBirds();
+            }, 3000);
+            break;
+        case 2:
+            document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
+            createFlies();
+            prlxDayItems.forEach(el => {
+                el.removePrlx();
+            });
+            //TODO: alter and add parallax elements for night
+            break;
+        case 3:
+            startScene3();
+            break;
     }
-    setTimeout(() => {
-        animateBirds();
-    }, 3000);
     setTimeout(() => {
         let btn = document.createElement("button");
         btn.innerText = "done exploring!";
@@ -201,6 +176,8 @@ window.addEventListener('load', function () {
         });
         document.getElementById("fox").style.top = "55vh";
         document.getElementById("spark").style.top = "25vh";
+
+        createDayPrlx();
     }, 200);
     nextScene();
 })
@@ -293,9 +270,9 @@ window.addEventListener('click', (evt) => {
     }
 
     if (evt.target.classList.contains("fly")) {
+        console.log("clicked on: fly");
         if(!secrets.night.uncovered.flies) {
             spark.animateSpark(evt.clientX, evt.clientY);
-            console.log("clicked on fly");
             aboutFlies.nextDialogue();
             secrets.night.uncovered.flies = true;
         }
@@ -312,6 +289,9 @@ window.addEventListener('click', (evt) => {
     }
     if (evt.target.tagName == "BUTTON") {
         spark.animateSpark(evt.clientX, evt.clientY);
+        if (evt.target.id == "intro_btn_3_0") {
+            //TODO: server request
+        }
     }
 });
 window.addEventListener('keydown', (evt) => {
