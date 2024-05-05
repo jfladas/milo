@@ -88,7 +88,7 @@ const createDialogue = (script, name) => {
             if (this == introDia || this == riverDia) {
                 start();
             } else if (this == endDia) {
-                //TODO: end game
+                saveData();
             }
         }
 
@@ -105,7 +105,7 @@ const createDialogue = (script, name) => {
                     setTimeout(() => {
                         window.location.href = "gameover.html";
                     }, 500);
-                    //TODO: gameover
+                    saveData();
                     break;
                 case "river_btn_4_0": // Yes
                     addSpark();
@@ -125,7 +125,7 @@ const createDialogue = (script, name) => {
                 case "river_btn_7_0": // Focus on yourself (bad)
                     changeNext("Thanks for sharing your thoughts, " + player.name + "! Let's keep exploring, shall we? It's getting pretty dark already...");
                     setTimeout(() => {
-                        if(player.sympathy >= 3) {
+                        if (player.sympathy >= 3) {
                             addSpark();
                         }
                     }, 500);
@@ -243,37 +243,9 @@ const createDialogue = (script, name) => {
                     break;
             }
             changeNext(text);
-            if (player.name != "Stranger") {
+            if (player.name.toLowerCase().replace(/\s/g, '') != "stranger") {
                 addSpark();
             }
-
-            //TODO: player data with post (or get)
-
-            /*
-            let url = "http://127.0.0.1:3000/player/?name=" + player.name;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.log(error));
-            */
-            
-            /*
-            fetch("http://127.0.0.1:3000/post", {
-                method: "POST",
-                mode: 'no-cors',
-                body: JSON.stringify({
-                    userId: 1,
-                    title: "Fix my bugs",
-                    completed: false
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-                .then(response => response.text()) // Parse response as text
-                .then(text => console.log(text)) // Log the text response
-                .catch(error => console.log("Error: " + error));
-                */
         }
     }
 
@@ -290,8 +262,8 @@ const createDialogue = (script, name) => {
 
     return {
         nextDialogue,
-        getType: function() {
-            if (script[progress-1].answers) {
+        getType: function () {
+            if (script[progress - 1].answers) {
                 return "question";
             } else {
                 return "statement";

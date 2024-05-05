@@ -4,6 +4,7 @@ let scrlSpeed = 1;
 let started = false;
 let scene = 0; // 1 = forest, 2 = river & night, 3 = cliff & end
 let player = {
+    id: 0,
     name: "Stranger",
     sparks: 0, // 0 - 6
     sympathy: 0, // 0 - 3
@@ -43,18 +44,47 @@ questionSound.volume = 0.7;
 let sparkSound = document.getElementById("sparksound");
 sparkSound.volume = 0.1;
 
-//working get request
-/*
-function updatePlayer() {
-    let url = "http://127.0.0.1:3000/?string=yay&number=123";
-    fetch(url)
+let url = "http://127.0.0.1:3000/start";
+fetch(url, {
+    method: 'POST',
+    credentials: 'include', // Ensure cookies are included in the request
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.status == "new") {
+            console.log("new user");
+        } else {
+            console.log("returning user");
+            player = data.player;
+            secrets = data.secrets;
+            endScreen();
+        }
+    })
+    .catch(error => console.log(error));
+
+function saveData() {
+    let url = "http://127.0.0.1:3000/end";
+    fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ player, secrets })
+    })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(endScreen())
         .catch(error => console.log(error));
 }
-updatePlayer();
-*/
 
+function endScreen() {
+    console.log(player);
+    //TODO: end screen
+}
 function start() {
     started = true;
     
@@ -141,6 +171,20 @@ function nextScene() {
     dialogue.nextDialogue();
 }
 
+const elementsToHide = document.querySelectorAll('#light, #bgcon, #prlxcon, #fox, #birds, #spcon, #uiimg, #uitxt, #inputcon, #overlaycon');
+// hide all elements
+function hideElements() {
+    elementsToHide.forEach(element => {
+        element.style.display = 'none';
+    });
+}
+// show all elements
+function showElements() {
+    elementsToHide.forEach(element => {
+        element.style.display = '';
+    });
+}
+
 // create spark counter ui
 for (let i = 0; i < 6; i++) {
     let div = document.createElement('div');
@@ -150,7 +194,6 @@ for (let i = 0; i < 6; i++) {
     }
     document.getElementById('spcon').appendChild(div);
 }
-
 
 function addSpark() {
     let newSpark = document.getElementsByClassName("sparks")[player.sparks];

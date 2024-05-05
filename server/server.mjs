@@ -1,98 +1,105 @@
 import * as fs from 'fs';
 import express from 'express';
-//import bodyParser from 'body-parser';
+import e from 'express';
+import cookieParser from 'cookie-parser';
+import { v4 as uuid } from 'uuid';
+import cors from 'cors';
 
 const app = express()
 const port = 3000;
 
 app.use(express.json());
+app.use(cors({ credentials: true, origin: true }));
+app.use(cookieParser());
 
-//app.use(bodyParser.json())
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.options('/start', cors());
+app.options('/end', cors());
 
-app.get('/', (req, res) => {
-
+app.post('/start', (req, res) => {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Lese File
-  fs.readFile('data.json', 'utf8', (err, data) => {
-    let data = [];
-    let newString = '';
-    let newNumber = 0;
-    let newObj = {};
+  if (req.cookies.userId) {
+    fs.readFile('results.json', 'utf8', (err, fileData) => {
+      if (err) {
+        console.log('Error reading file:', err);
+        return res.status(500).json({ error: 'Error reading file' });
+      }
 
-    if (err) {
-      console.log('Error: ' + err);
-      res.write('Error: ' + err);
-      return;
-    } else {
-      data = JSON.parse(data);
-      newString = req.query.string;
-      newNumber = Number(req.query.number);
-      // Neuer Score in Array einfügen
-      newObj = {'string': newString, 'number': newNumber};
-      data.push(newObj);
-      res.json(data);
- 
-      
-      
-      fs.writeFile('data.json', JSON.stringify(data) , (err) => {
-        if (err){
-          console.log('Error: ' + err);
-          res.write('Error: ' + err);
-        } else {
-          console.log('Wrote new Results: ' + JSON.stringify(newObj));
-        }
-      });
-      
-      //res.end();
-    }
-  });
+      let results = [];
+      try {
+        results = JSON.parse(fileData);
+      } catch (parseError) {
+        console.log('Error parsing JSON:', parseError);
+        return res.status(500).json({ error: 'Error parsing JSON' });
+      }
+      const existingEntry = results.find(entry => entry.player.id === req.cookies.userId);
+      if (existingEntry) {
+        console.log('Returning user with existing data');
+        res.json({
+          status: 'returning',
+          player: existingEntry.player,
+          secrets: existingEntry.secrets
+        });
+      } else {
+        console.log('Returning user without existing data');
+        res.clearCookie('userId');
+        res.json({
+          status: 'new'
+        });
+      }
+    });
+  } else {
+    console.log('New user');
+    res.json({
+      status: 'new'
+    });
+  }
 });
-/*
-app.get('/player', (req, res) => {
 
+app.post('/end', (req, res) => {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Lese File
-  fs.readFile('results.json', 'utf8', (err, data) => {
+  const { player, secrets } = req.body;
+  let data = { player, secrets };
+
+  console.log('Creating cookie...');
+  // Set a cookie named "userId" with a unique identifier
+  const uniqueId = uuid();
+  res.cookie('userId', uniqueId, { maxAge: 86400000, httpOnly: true });
+  data.player.id = uniqueId;
+
+  fs.readFile('results.json', 'utf8', (err, fileData) => {
+    if (err) {
+      console.log('Error reading file:', err);
+      return res.status(500).json({ error: 'Error reading file' });
+    }
+
     let results = [];
-    let newName = '';
-    let newObj = {};
-
-    if (err) {
-      console.log('Error: ' + err);
-      res.write('Error: ' + err);
-      return;
-    } else {
-      results = JSON.parse(data);
-      newName = req.query.name;
-      newObj = { 'name': newName };
-      results.push(newObj);
-      res.json(results);
-
-
-
-      fs.writeFile('results.json', JSON.stringify(results), (err) => {
-        if (err) {
-          console.log('Error: ' + err);
-          res.write('Error: ' + err);
-        } else {
-          console.log('Wrote new Results: ' + JSON.stringify(newObj));
-        }
-      });
+    try {
+      results = JSON.parse(fileData);
+    } catch (parseError) {
+      console.log('Error parsing JSON:', parseError);
+      return res.status(500).json({ error: 'Error parsing JSON' });
     }
-  });
-});
-*/
 
-app.post('/post', (req, res) => {
-  let data = req.body;
-  console.log("Data: " + data);
-  //res.json({ message: 'Data Received', data });
-  res.send('Data Received: ' + JSON.stringify(data));
+    results.push(data);
+
+    fs.writeFile('results.json', JSON.stringify(results, null, 2), (err) => {
+      if (err) {
+      console.log('Error writing file:', err);
+      return res.status(500).json({ error: 'Error writing file' });
+      }
+
+      console.log('Data written to results.json:', data);
+      res.json({ success: true });
+    });
+  });
 });
 
 app.listen(port, () => {
