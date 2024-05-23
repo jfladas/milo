@@ -20,7 +20,11 @@ const createDialogue = (script, name) => {
                     }
                 }, 10000);
                 if (this == aboutShrums || this == aboutBerries || this == aboutBirds) {
-                    secrets.day.found++;
+                    if (scene == 1) {
+                        secrets.day.found++;
+                    } else if (scene == 2) {
+                        secrets.night.found++;
+                    }
                 }
                 if (this == aboutFlies) {
                     secrets.night.found++;
@@ -103,9 +107,8 @@ const createDialogue = (script, name) => {
                 case "intro_btn_5_1": // No
                     changeNext("...");
                     setTimeout(() => {
-                        window.location.href = "gameover.html";
+                        saveData();
                     }, 500);
-                    saveData();
                     break;
                 case "river_btn_4_0": // Yes
                     addSpark();
@@ -260,6 +263,10 @@ const createDialogue = (script, name) => {
         }
     }
 
+    function appendDialogue(dia) {
+        script.push(...dia);
+    }
+
     return {
         nextDialogue,
         getType: function () {
@@ -270,6 +277,7 @@ const createDialogue = (script, name) => {
             }
         },
         changeNext,
+        appendDialogue,
         getName: () => name
     };
 };
@@ -332,6 +340,5 @@ const riverDia = createDialogue([
     { text: "Thanks for sharing your thoughts! Let's keep exploring, shall we? It's getting pretty dark already..." },
 ], "river");
 const endDia = createDialogue([
-    { text: "Thank you for joining me on this adventure! I hope you enjoyed our time together." },
-    { text: "Remember, the forest is always here, waiting for you to explore its wonders. Until next time, my friend!" },
+    { text: "So our journey comes to an end..." }
 ], "end");

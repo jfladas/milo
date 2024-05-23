@@ -14,7 +14,7 @@
     font-family: pixel;
     font-size: 32px;
     color: var(--light);
-    cursor: url(assets/cursor.cur), default;
+    cursor: url("/assets/cursor.cur"), default;
     user-select: none;
 }
 
@@ -53,6 +53,66 @@ body {
     background-position: center;
 }
 
+#end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 15;
+    background-color: var(--dark);
+}
+
+#endtxt {
+    margin-top: 10vh;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#endtxt p,
+#endspan {
+    font-size: 64px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+#endspan {
+    background-color: var(--orange);
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+
+#endsparks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 10vh;
+    margin: 5vh 0;
+    transform: scale(1.5);
+}
+
+#endscores {
+    width: 50vw;
+    height: 30vh;
+    background-color: var(--orange);
+}
+
+#endbutton {
+    margin: 5vh 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #bgcon {
     position: fixed;
     overflow-x: hidden;
@@ -79,7 +139,8 @@ body {
     position: absolute;
     background-image: url("/assets/spark.png");
     background-repeat: no-repeat;
-    height: 96px;width: 96px;
+    height: 96px;
+    width: 96px;
     width: 384px;
     top: 100vh;
     left: 100px;
@@ -259,6 +320,7 @@ input::placeholder {
     align-items: center;
     flex-direction: row-reverse;
 }
+
 .sparks {
     width: 72px;
     height: 96px;
@@ -280,9 +342,9 @@ input::placeholder {
     align-items: center;
 }
 
-#sp{
+#sp {
     height: 10vh;
     width: 10vh;
     opacity: 0;
-    z-index: 6;
+    z-index: 16;
 }

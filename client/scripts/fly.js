@@ -56,3 +56,9 @@ function createFlies() {
         el.style.background = "radial-gradient(circle at center, #C6AE33AA, transparent 50%)";
     });
 }
+function removeFlies() {
+    Array.prototype.forEach.call(flies, function (f) {
+        f.getElem().remove();
+    });
+    flies = [];
+}
