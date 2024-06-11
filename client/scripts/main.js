@@ -33,6 +33,7 @@ let secrets = {
         found: 0,
     }
 }
+let topPlayers = [];
 
 //sound
 let soundPlaying = false;
@@ -109,6 +110,32 @@ function deleteData() {
     }, 300);
 }
 
+function getTopData() {
+    let url = "http://127.0.0.1:3000/top";
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            topPlayers = data;
+
+            console.log(topPlayers);
+            topPlayers.forEach((entry) => {
+                const div = document.createElement('div');
+                div.className = 'topscore';
+                div.innerText = `${entry.player.name} - Sparks: ${entry.player.sparks}`;
+                document.getElementById('endscores').appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
 function endScreen() {
     console.log(player);
     //TODO: end screen
@@ -137,6 +164,8 @@ function endScreen() {
     endScoresEl.id = 'endscores';
     document.getElementById('end').appendChild(endScoresEl);
 
+    getTopData();
+
     const endButtonEl = document.createElement('button');
     endButtonEl.id = 'endbutton';
     endButtonEl.innerText = "restart";
@@ -145,7 +174,6 @@ function endScreen() {
         deleteData();
     }
     document.getElementById('end').appendChild(endButtonEl);
-
     for (let i = 0; i < player.sparks; i++) {
         setTimeout(() => {
             document.getElementsByClassName("sparks")[i].style.backgroundImage = "url('assets/sparks_full.png')";
@@ -163,7 +191,7 @@ function endScreen() {
 
 function initialize() {
     document.getElementById("title").style.position = "absolute";
-    this.setTimeout(() => {
+    setTimeout(() => {
         document.getElementById("title").animate([
             { opacity: "1" },
             { opacity: "0" }

@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "player": {
+      "id": "21e10e28-d74f-4850-ae37-c1b962369099",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "e173356d-8f77-436e-868d-c5d232035695",
+      "name": "jfladas",
+      "sparks": 7,
+      "sympathy": 3,
+      "ending": 2
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  }
+]

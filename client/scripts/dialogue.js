@@ -46,6 +46,7 @@ const createDialogue = (script, name) => {
                     input.type = "text";
                     input.id = "input";
                     input.placeholder = "Stranger";
+                    input.maxLength = 25;
                     input.setAttribute("spellcheck", "false");
                     input.style.transform = "translateX(500%)";
                     input.style.transition = "transform 1s ease-in-out";

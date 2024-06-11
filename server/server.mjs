@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.options('/check', cors());
 app.options('/save', cors());
 app.options('/delete', cors());
+app.options('/top', cors());
 
 app.post('/check', (req, res) => {
   // Website you wish to allow to connect
@@ -135,6 +136,27 @@ app.post('/delete', (req, res) => {
       console.log('Data deleted from results.json:', id);
       res.json({ success: true });
     });
+  });
+});
+
+app.post('/top', (req, res) => {
+  fs.readFile('results.json', 'utf8', (err, fileData) => {
+    if (err) {
+      console.log('Error reading file:', err);
+      return res.status(500).json({ error: 'Error reading file' });
+    }
+
+    let results = [];
+    try {
+      results = JSON.parse(fileData);
+    } catch (parseError) {
+      console.log('Error parsing JSON:', parseError);
+      return res.status(500).json({ error: 'Error parsing JSON' });
+    }
+
+    results.sort((a, b) => b.player.sparks - a.player.sparks);
+
+    res.json(results.slice(0, 10));
   });
 });
 

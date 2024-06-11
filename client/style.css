@@ -97,13 +97,18 @@ body {
     width: 100vw;
     height: 10vh;
     margin: 5vh 0;
-    transform: scale(1.5);
+}
+#endsparks .sparks {
+    width: 108px;
+    height: 144px;
+    background-size: contain;
 }
 
 #endscores {
-    width: 50vw;
+    max-width: 90vw;
     height: 30vh;
     background-color: var(--orange);
+    overflow: auto;
 }
 
 #endbutton {
