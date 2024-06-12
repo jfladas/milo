@@ -8,7 +8,8 @@ let player = {
     name: "Stranger",
     sparks: 0, // 0 - 7
     sympathy: 0, // 0 - 3
-    ending: -1 // 0 = bad, 1 = neutral, 2 = good, -1 = none
+    ending: -1, // 0 = bad, 1 = neutral, 2 = good, 3 = perfect, -1 = none
+    score: 0
 };
 let secrets = {
     day: {
@@ -72,6 +73,8 @@ fetch(url, {
     });
 
 function saveData() {
+    player.score = player.ending * 1000 + player.sparks * 100 + player.sympathy * 20 + secrets.day.found * 10 + secrets.night.found * 10;
+    if (secrets.day.uncovered.fox) { player.score += 20; }
     let url = "http://127.0.0.1:3000/save";
     fetch(url, {
         method: 'POST',
@@ -110,6 +113,33 @@ function deleteData() {
     }, 300);
 }
 
+function createScoreEntry(player, isCurrentPlayer) {
+    const div = document.createElement('div');
+    div.className = 'topscore';
+    div.innerHTML = `${player.name} | ${player.score} `;
+    if (isCurrentPlayer) {
+        div.style.backgroundColor = "var(--yellow)";
+        div.style.color = "var(--black)";
+        div.style.fontWeight = "bold";
+    }
+    const img = document.createElement('img');
+    img.src = 'assets/small.png';
+    img.className = 'topspark';
+    div.appendChild(img);
+    for (let i = 0; i < player.sparks; i++) {
+        const sparkImg = document.createElement('img');
+        if (isCurrentPlayer) {
+            sparkImg.src = 'assets/spark_dark_small.png';
+            sparkImg.style.transform = 'scale(1.25) translateY(10px)';
+        } else {
+            sparkImg.src = 'assets/spark_single_small.png';
+        }
+        sparkImg.className = 'topspark';
+        div.appendChild(sparkImg);
+    }
+    document.getElementById('endscores').appendChild(div);
+}
+
 function getTopData() {
     let url = "http://127.0.0.1:3000/top";
     fetch(url, {
@@ -122,19 +152,29 @@ function getTopData() {
         .then(data => {
             console.log(data);
             topPlayers = data;
-
+            let inTop = false;
             console.log(topPlayers);
             topPlayers.forEach((entry) => {
-                const div = document.createElement('div');
-                div.className = 'topscore';
-                div.innerText = `${entry.player.name} - Sparks: ${entry.player.sparks}`;
-                document.getElementById('endscores').appendChild(div);
+                const isCurrentPlayer = entry.player.id == player.id;
+                createScoreEntry(entry.player, isCurrentPlayer);
+                if (isCurrentPlayer) {
+                    inTop = true;
+                }
             });
+            if (!inTop) {
+                const divSpace = document.createElement('div');
+                divSpace.className = 'topscore space';
+                divSpace.innerHTML = `...`;
+
+                document.getElementById('endscores').appendChild(divSpace);
+                createScoreEntry(player, true);
+            }
         })
         .catch(error => {
             console.log(error);
         });
 }
+
 
 function endScreen() {
     console.log(player);
@@ -319,7 +359,7 @@ function nextScene() {
             player.ending = 1;
             dia = [
                 { text: "Under the serene night sky, I find myself drifting off to sleep. It's a peaceful slumber. Just the quiet embrace of the night, wrapping me in its embrace." },
-                { text: "Maybe this is what they mean by the circle of life, huh? Endings leading to new beginnings." }
+                { text: "Maybe this is what they mean by the circle of life, huh? Endings leading to new beginnings..." }
             ];
         } else {
             player.ending = 2;
@@ -327,6 +367,10 @@ function nextScene() {
                 { text: "With a contented sigh, I nestle into my cozy spot under the stars. Today was magical, filled with laughter, adventure, and cherished memories." },
                 { text: "As I drift off to sleep, I'm filled with gratitude for this wonderful day and the amazing friend who shared it with me, no matter what the future may hold." }
             ];
+            if (player.sparks == 7) {
+                dia.push({ text: "Thanks to you, today was perfect. Sweet dreams, " + player.name + "!" });
+                player.ending = 3;
+            }
         }
         endDia.appendDialogue(dia);
     }

@@ -154,7 +154,7 @@ app.post('/top', (req, res) => {
       return res.status(500).json({ error: 'Error parsing JSON' });
     }
 
-    results.sort((a, b) => b.player.sparks - a.player.sparks);
+    results.sort((a, b) => b.player.score - a.player.score);
 
     res.json(results.slice(0, 10));
   });

@@ -1,16 +1,17 @@
 [
   {
     "player": {
-      "id": "21e10e28-d74f-4850-ae37-c1b962369099",
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
       "name": "Baramee",
       "sparks": 5,
       "sympathy": 0,
-      "ending": 1
+      "ending": 1,
+      "score": 1560
     },
     "secrets": {
       "day": {
         "uncovered": {
-          "fox": true,
+          "fox": false,
           "all": true,
           "shrum1": true,
           "shrum3": true,
@@ -33,16 +34,17 @@
   },
   {
     "player": {
-      "id": "e173356d-8f77-436e-868d-c5d232035695",
-      "name": "jfladas",
-      "sparks": 7,
-      "sympathy": 3,
-      "ending": 2
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
     },
     "secrets": {
       "day": {
         "uncovered": {
-          "fox": true,
+          "fox": false,
           "all": true,
           "shrum1": true,
           "shrum3": true,
@@ -60,6 +62,369 @@
         },
         "count": 2,
         "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "3ecec07b-62ee-427b-92fa-2530dc6e5e56",
+      "name": "Baramee",
+      "sparks": 5,
+      "sympathy": 0,
+      "ending": 1,
+      "score": 1560
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum1": true,
+          "shrum3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum2": true,
+          "flies": true
+        },
+        "count": 2,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "a7c6a3d8-3426-4448-9bde-712c9da5653e",
+      "name": "Stranger",
+      "sparks": 0,
+      "sympathy": 0,
+      "ending": -1,
+      "score": -1000
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": false,
+          "shrum1": false,
+          "shrum3": false,
+          "berries": false,
+          "birds": false
+        },
+        "count": 4,
+        "found": 0
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum2": false,
+          "flies": false
+        },
+        "count": 2,
+        "found": 0
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "d6ac24b1-7166-4e02-a30c-64d377ff911e",
+      "name": "ugh",
+      "sparks": 1,
+      "sympathy": 0,
+      "ending": -1,
+      "score": -900
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": false,
+          "shrum1": false,
+          "shrum3": false,
+          "berries": false,
+          "birds": false
+        },
+        "count": 4,
+        "found": 0
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum2": false,
+          "flies": false
+        },
+        "count": 2,
+        "found": 0
       }
     }
   }

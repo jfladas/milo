@@ -3,6 +3,7 @@
     --light: #d7cfcc;
     --orange: #C04C09;
     --black: #292322;
+    --yellow: #C5AE43;
 }
 
 @font-face {
@@ -84,6 +85,12 @@ body {
     white-space: nowrap;
 }
 
+#endtxt p {
+    text-wrap: wrap;
+    text-align: center;
+    line-height: 1.3;
+}
+
 #endspan {
     background-color: var(--orange);
     padding: 10px 20px;
@@ -105,10 +112,32 @@ body {
 }
 
 #endscores {
+    min-width: 50vw;
     max-width: 90vw;
     height: 30vh;
-    background-color: var(--orange);
-    overflow: auto;
+    background-color: var(--black);
+    border: var(--black) 4px solid;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    scrollbar-color: var(--light) var(--black);
+    scrollbar-width: thin;
+}
+.topscore {
+    height: 50px;
+    align-content: end;
+    padding: 0px 20px 30px 20px;
+}
+.topscore.space {
+    height: 20px;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    transform: translateY(-20px);
+}
+.topspark {
+    height: 50px;
+    transform: translateY(12px);
 }
 
 #endbutton {
@@ -192,10 +221,10 @@ body {
 
 .fly {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     z-index: 10;
-    background: none;
+    background-size: contain;
 }
 
 .prlx {

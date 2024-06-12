@@ -53,7 +53,8 @@ function createFlies() {
     }
     Array.prototype.forEach.call(flies, function (f) {
         el = f.getElem();
-        el.style.background = "radial-gradient(circle at center, #C6AE33AA, transparent 50%)";
+        el.style.backgroundImage = "url('assets/fly.png')";
+        //el.style.background = "radial-gradient(circle at center, #C6AE33AA, transparent 50%)";
     });
 }
 function removeFlies() {
