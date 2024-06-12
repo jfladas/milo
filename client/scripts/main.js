@@ -56,12 +56,11 @@ fetch(url, {
 })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (data.status == "new") {
-            console.log("new user");
+            //console.log("new user");
             initialize();
         } else {
-            console.log("returning user");
+            //console.log("returning user");
             player = data.player;
             secrets = data.secrets;
             endScreen();
@@ -113,33 +112,64 @@ function deleteData() {
     }, 300);
 }
 
-function createScoreEntry(player, isCurrentPlayer) {
-    const div = document.createElement('div');
-    div.className = 'topscore';
-    div.innerHTML = `${player.name} | ${player.score} `;
-    if (isCurrentPlayer) {
-        div.style.backgroundColor = "var(--yellow)";
-        div.style.color = "var(--black)";
-        div.style.fontWeight = "bold";
-    }
-    const img = document.createElement('img');
-    img.src = 'assets/small.png';
-    img.className = 'topspark';
-    div.appendChild(img);
-    for (let i = 0; i < player.sparks; i++) {
-        const sparkImg = document.createElement('img');
+function createScoreEntries() {
+    let inTop = false;
+    topPlayers.forEach((entry) => {
+        let isCurrentPlayer = entry.player.id == player.id;
+        createScoreEntry(entry.player, isCurrentPlayer);
         if (isCurrentPlayer) {
-            sparkImg.src = 'assets/spark_dark_small.png';
-            sparkImg.style.transform = 'scale(1.25) translateY(10px)';
-        } else {
-            sparkImg.src = 'assets/spark_single_small.png';
+            inTop = true;
         }
-        sparkImg.className = 'topspark';
-        div.appendChild(sparkImg);
-    }
-    document.getElementById('endscores').appendChild(div);
-}
+    });
+    if (!inTop) {
+        const divSpace = document.createElement('div');
+        divSpace.className = 'topscore space';
+        divSpace.innerHTML = `...`;
 
+        document.getElementById('endscores').appendChild(divSpace);
+        createScoreEntry(player, true);
+    }
+
+    function createScoreEntry(player, isCurrentPlayer) {
+        const div = document.createElement('div');
+        div.className = 'topscore';
+
+        let initialSparkImg;
+        let initialSparkSrc;
+        if (player.score >= 3840) {
+            initialSparkSrc = isCurrentPlayer ? 'assets/spark_dark_small.png' : 'assets/spark_single_small.png';
+        } else {
+            initialSparkSrc = 'assets/small.png';
+        }
+        initialSparkImg = createSparkImg(initialSparkSrc);
+        div.appendChild(initialSparkImg);
+
+        div.innerHTML += ` ${player.name} | ${player.score} `;
+
+        if (isCurrentPlayer) {
+            div.style.backgroundColor = "var(--yellow)";
+            div.style.color = "var(--black)";
+            div.style.fontWeight = "bold";
+        }
+
+        for (let i = 0; i < player.sparks; i++) {
+            const sparkImg = createSparkImg(isCurrentPlayer ? 'assets/spark_dark_small.png' : 'assets/spark_single_small.png');
+            div.appendChild(sparkImg);
+        }
+
+        document.getElementById('endscores').appendChild(div);
+
+        function createSparkImg(src) {
+            const sparkImg = document.createElement('img');
+            sparkImg.src = src;
+            if (src == 'assets/spark_dark_small.png') {
+                sparkImg.style.transform = 'scale(1.25) translateY(10px)';
+            }
+            sparkImg.className = 'topspark';
+            return sparkImg;
+        }
+    }
+}
 function getTopData() {
     let url = "http://127.0.0.1:3000/top";
     fetch(url, {
@@ -150,25 +180,8 @@ function getTopData() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             topPlayers = data;
-            let inTop = false;
-            console.log(topPlayers);
-            topPlayers.forEach((entry) => {
-                const isCurrentPlayer = entry.player.id == player.id;
-                createScoreEntry(entry.player, isCurrentPlayer);
-                if (isCurrentPlayer) {
-                    inTop = true;
-                }
-            });
-            if (!inTop) {
-                const divSpace = document.createElement('div');
-                divSpace.className = 'topscore space';
-                divSpace.innerHTML = `...`;
-
-                document.getElementById('endscores').appendChild(divSpace);
-                createScoreEntry(player, true);
-            }
+            createScoreEntries();
         })
         .catch(error => {
             console.log(error);
@@ -177,8 +190,6 @@ function getTopData() {
 
 
 function endScreen() {
-    console.log(player);
-    //TODO: end screen
     const endEl = document.createElement('div');
     endEl.id = 'end';
     document.body.appendChild(endEl);
@@ -209,8 +220,13 @@ function endScreen() {
     const endButtonEl = document.createElement('button');
     endButtonEl.id = 'endbutton';
     endButtonEl.innerText = "restart";
+    endButtonEl.onmouseover = () => {
+        endButtonEl.innerText = "restart (deletes your data)";
+    }
+    endButtonEl.onmouseout = () => {
+        endButtonEl.innerText = "restart";
+    }
     endButtonEl.onclick = () => {
-        console.log("restart");
         deleteData();
     }
     document.getElementById('end').appendChild(endButtonEl);
@@ -267,17 +283,20 @@ function start() {
             setTimeout(animateBirds, 3000);
             break;
         case 2:
-            document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
+            document.getElementById("light").style.backgroundImage = "url('assets/flash.png')";
+            //document.getElementById("light").style.background = "radial-gradient(circle at center, transparent, #010912e6 30%)";
             createFlies();
             break;
     }
 
     fox.setX(0);
     bg.setX(0);
-    document.getElementById("uicon").style.background = "none";
-    document.getElementById("uiimg").style.display = "none";
-    document.getElementById("uicon").style.zIndex = "4";
-    document.getElementById("inputcon").style.display = "none";
+    
+    setTimeout(() => {
+        document.getElementById("uicon").style.background = "none";
+        document.getElementById("uiimg").style.display = "none";
+        document.getElementById("inputcon").style.display = "none";
+    }, 100);
 
 
     setTimeout(() => {
@@ -316,7 +335,6 @@ function nextScene() {
     scene++;
     document.getElementById("uicon").style.background = "var(--dark)";
     document.getElementById("uiimg").style.display = "initial";
-    document.getElementById("uicon").style.zIndex = "4";
     document.getElementById("inputcon").style.display = "flex";
     document.getElementById("uitxt").innerHTML = "";
     
@@ -424,8 +442,7 @@ function addEventListeners() {
         }
     });
     window.addEventListener('click', (evt) => {
-
-        console.log("clicked on: " + evt.target.id);
+        //console.log("clicked on: " + evt.target.id);
         switch (evt.target.id) {
             case "iconfs":
                 spark.animateSpark(evt.clientX, evt.clientY);
@@ -482,7 +499,7 @@ function addEventListeners() {
         }
 
         if (evt.target.classList.contains("fly")) {
-            console.log("clicked on: fly");
+            //console.log("clicked on: fly");
             if (!secrets.night.uncovered.flies && started) {
                 spark.animateSpark(evt.clientX, evt.clientY);
                 aboutFlies.nextDialogue();

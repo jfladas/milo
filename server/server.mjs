@@ -154,6 +154,7 @@ app.post('/top', (req, res) => {
       return res.status(500).json({ error: 'Error parsing JSON' });
     }
 
+    results.reverse(); // Reverse the order to give priority to more recent entries
     results.sort((a, b) => b.player.score - a.player.score);
 
     res.json(results.slice(0, 10));

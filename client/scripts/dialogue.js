@@ -329,7 +329,6 @@ const aboutBirds = createDialogue([
 const aboutFlies = createDialogue([
     { text: "Wow, fireflies! They're like little stars dancing in the night, lighting up the darkness with their enchanting glow. It's like the forest has its own constellation." }
 ], "flies");
-//TODO: add more dialogues (...)
 const riverDia = createDialogue([
     { text: "Oh, look at this! We've stumbled upon my favorite spot, the enchanting river Rami." },
     { text: "It's such a beautiful evening, isn't it? Look how the fading sunlight casts a tranquil glow over the water." },

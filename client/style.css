@@ -216,6 +216,8 @@ body {
     left: -50vw;
     top: -50vh;
     background: none;
+    background-size: cover;
+    background-position: center center;
     z-index: 3;
 }
 
@@ -253,6 +255,7 @@ body {
     align-items: center;
     flex-direction: column;
     background-color: var(--dark);
+    z-index: 4;
 }
 
 #uiimg {
