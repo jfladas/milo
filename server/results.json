@@ -262,5 +262,41 @@
         "found": 1
       }
     }
+  },
+  {
+    "player": {
+      "id": "db409419-67b0-4ba2-b8c5-76349a8d064e",
+      "name": "Stranger",
+      "sparks": 0,
+      "sympathy": 0,
+      "ending": -1,
+      "score": -1000
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": false,
+          "shrum3": false,
+          "flwr3": false,
+          "berries": false,
+          "birds": false
+        },
+        "count": 4,
+        "found": 0
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": false,
+          "flwr1": false,
+          "flwr2": false,
+          "flies": false
+        },
+        "count": 5,
+        "found": 0
+      }
+    }
   }
 ]

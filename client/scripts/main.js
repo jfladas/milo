@@ -48,6 +48,8 @@ let questionSound = document.getElementById("questionsound");
 questionSound.volume = 0.7;
 let sparkSound = document.getElementById("sparksound");
 sparkSound.volume = 0.1;
+let birbSound = document.getElementById("birbsound");
+birbSound.volume = 0.5;
 
 let url = "http://127.0.0.1:3000/check";
 fetch(url, {
@@ -283,7 +285,7 @@ function start() {
     
     switch (scene) {
         case 1:
-            setTimeout(animateBirds, 3000);
+            setTimeout(animateBirds, 8000);
             break;
         case 2:
             document.getElementById("light").style.backgroundImage = "url('assets/flash.png')";
@@ -326,9 +328,9 @@ function start() {
                 { transform: 'translateX(calc(-10vw - 256px))' }
             ], {
                 duration: window.innerWidth * 3,
-                iterations: 1,
-                delay: 5000
+                iterations: 1
             });
+            birbSound.play();
             setTimeout(animateBirds, window.innerWidth * 3 + 10000);
         }
     }
