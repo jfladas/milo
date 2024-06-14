@@ -88,7 +88,7 @@ function createDayPrlx() {
         { id: "shrum3", src: "assets/shrum3.png", factor: 5, pos: [240] },
         { src: "assets/bush2.png", factor: 3.5, pos: [30, 130, 180] },
         { id: "berries", src: "assets/berries.png", factor: 4, pos: [100] },
-        { id: "shrum1", src: "assets/shrum1.png", factor: 5, pos: [30] }
+        { id: "flwr3", src: "assets/flwr3.png", factor: 5, pos: [30] }
     ];
     prlxDayData.forEach(item => {
         const { id, src, factor, pos } = item;
@@ -105,9 +105,11 @@ function createNightPrlx() {
     const prlxNightData = [
         { src: "assets/tree.png", factor: 2, pos: [40, 100] },
         { src: "assets/bush1.png", factor: 3, pos: [20, 100] },
+        { id: "shrum1", src: "assets/shrum1.png", factor: 5, pos: [30] },
         { src: "assets/bush2.png", factor: 3.5, pos: [30, 130, 180] },
-        { id: "shrum2", src: "assets/shrum2.png", factor: 5, pos: [180] }
-        //TODO: add more night parallax items
+        { id: "shrum2", src: "assets/shrum2.png", factor: 5, pos: [180] },
+        { id: "flwr2", src: "assets/flwr2.png", factor: 5, pos: [100] },
+        { id: "flwr1", src: "assets/flwr1.png", factor: 5, pos: [280] }
     ];
     prlxNightData.forEach(item => {
         const { id, src, factor, pos } = item;

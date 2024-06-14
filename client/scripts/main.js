@@ -16,8 +16,8 @@ let secrets = {
         uncovered: {
             fox: false,
             all: false,
-            shrum1: false,
             shrum3: false,
+            flwr3: false,
             berries: false,
             birds: false
         },
@@ -27,10 +27,13 @@ let secrets = {
     night: {
         uncovered: {
             all: false,
+            shrum1: false,
             shrum2: false,
+            flwr1: false,
+            flwr2: false,
             flies: false
         },
-        count: 2,
+        count: 5,
         found: 0,
     }
 }
@@ -442,7 +445,7 @@ function addEventListeners() {
         }
     });
     window.addEventListener('click', (evt) => {
-        //console.log("clicked on: " + evt.target.id);
+        console.log("clicked on: " + evt.target.id);
         switch (evt.target.id) {
             case "iconfs":
                 spark.animateSpark(evt.clientX, evt.clientY);
@@ -456,18 +459,18 @@ function addEventListeners() {
                     secrets.day.uncovered.fox = true;
                 }
                 break;
-            case "shrum1":
-                if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum1 && started) {
-                    spark.animateSpark(evt.clientX, evt.clientY);
-                    aboutShrums.nextDialogue();
-                    secrets.day.uncovered.shrum1 = true;
-                }
-                break;
             case "shrum3":
-                if (evt.clientY > window.innerHeight - 200 && !secrets.day.uncovered.shrum3 && started) {
+                if (evt.clientY > window.innerHeight - 250 && !secrets.day.uncovered.shrum3 && started) {
                     spark.animateSpark(evt.clientX, evt.clientY);
                     aboutShrums.nextDialogue();
                     secrets.day.uncovered.shrum3 = true;
+                }
+                break;
+            case "flwr3":
+                if (evt.clientY > window.innerHeight - 250 && !secrets.day.uncovered.flwr3 && started) {
+                    spark.animateSpark(evt.clientX, evt.clientY);
+                    aboutFlowers.nextDialogue();
+                    secrets.day.uncovered.flwr3 = true;
                 }
                 break;
             case "berries":
@@ -486,14 +489,35 @@ function addEventListeners() {
                 break;
 
 
+            case "shrum1":
+                if (evt.clientY > window.innerHeight - 250 && !secrets.night.uncovered.shrum1 && started) {
+                    spark.animateSpark(evt.clientX, evt.clientY);
+                    aboutShrums.nextDialogue();
+                    secrets.night.uncovered.shrum1 = true;
+                }
+                break;
             case "shrum2":
-                if (evt.clientY > window.innerHeight - 200 && !secrets.night.uncovered.shrum2 && started) {
+                if (evt.clientY > window.innerHeight - 250 && !secrets.night.uncovered.shrum2 && started) {
                     spark.animateSpark(evt.clientX, evt.clientY);
                     aboutShrums.nextDialogue();
                     secrets.night.uncovered.shrum2 = true;
                 }
                 break;
-
+            case "flwr1":
+                if (evt.clientY > window.innerHeight - 250 && !secrets.night.uncovered.flwr1 && started) {
+                    spark.animateSpark(evt.clientX, evt.clientY);
+                    aboutFlowers.nextDialogue();
+                    secrets.night.uncovered.flwr1 = true;
+                }
+                break;
+            case "flwr2":
+                if (evt.clientY > window.innerHeight - 250 && !secrets.night.uncovered.flwr2 && started) {
+                    spark.animateSpark(evt.clientX, evt.clientY);
+                    aboutFlowers.nextDialogue();
+                    secrets.night.uncovered.flwr2 = true;
+                }
+                break;
+            
             default:
                 break;
         }

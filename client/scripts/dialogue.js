@@ -12,14 +12,14 @@ const createDialogue = (script, name) => {
         progress++;
         if (nxttxt != null) {
             document.getElementById("uitxt").innerText = nxttxt.text;
-            if (this == aboutMilo || this == aboutShrums || this == aboutBerries || this == aboutBirds || this == aboutFlies) {
+            if (this == aboutMilo || this == aboutShrums || this == aboutFlowers || this == aboutBerries || this == aboutBirds || this == aboutFlies) {
                 let nowtxt = nxttxt.text;
                 setTimeout(() => {
                     if (document.getElementById("uitxt").innerText == nowtxt) {
                         document.getElementById("uitxt").innerText = "";
                     }
                 }, 10000);
-                if (this == aboutShrums || this == aboutBerries || this == aboutBirds) {
+                if (this == aboutShrums || this == aboutFlowers || this == aboutBerries || this == aboutBirds) {
                     if (scene == 1) {
                         secrets.day.found++;
                     } else if (scene == 2) {
@@ -106,6 +106,7 @@ const createDialogue = (script, name) => {
                     addSpark();
                     break;
                 case "intro_btn_5_1": // No
+                    started = true;
                     changeNext("...");
                     setTimeout(() => {
                         saveData();
@@ -320,6 +321,11 @@ const aboutShrums = createDialogue([
     { text: "These fungi, small yet significant, emerge from the shadows, reminding us of beauty in darkness." },
     { text: "Like time's guardians, the shrooms silently witness nature's rhythm. Every little instance may shape our journey." }
 ], "shrum");
+const aboutFlowers = createDialogue([
+    { text: "Flowers, each one a vibrant symphony of colors, invite us to pause and admire the fleeting beauty of the world around us." },
+    { text: "These blossoms, with their delicate petals and fragrant allure, symbolize the grace and elegance that life can offer." },
+    { text: "In their silent bloom, flowers convey messages of hope and renewal, urging us to find joy in the cycles of nature." }
+], "flwrs");
 const aboutBerries = createDialogue([
     { text: "Berries, nature's sweet jewels, each one a tiny burst of flavor. They are like the little joys life offers, waiting to be savored." }
 ], "berries");
