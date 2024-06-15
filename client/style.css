@@ -159,7 +159,7 @@ body {
 
 
 #fox {
-    background-image: url("/assets/fox.png");
+    background-image: url("assets/fox.png");
     background-repeat: no-repeat;
     height: 256px;
     width: 1024px;
@@ -171,7 +171,7 @@ body {
 
 #spark {
     position: absolute;
-    background-image: url("/assets/spark.png");
+    background-image: url("assets/spark.png");
     background-repeat: no-repeat;
     height: 96px;
     width: 96px;
@@ -182,7 +182,7 @@ body {
 }
 
 #sparkSkin {
-    background-image: url("/assets/spark.png");
+    background-image: url("assets/spark.png");
     background-repeat: no-repeat;
     height: 96px;
     width: 384px;
@@ -201,7 +201,7 @@ body {
 }
 
 #bg {
-    background-image: url("/assets/bg.png");
+    background-image: url("assets/bg.png");
     background-repeat: repeat-x;
     background-position: center;
     height: 100vh;
@@ -361,7 +361,7 @@ input::placeholder {
 .sparks {
     width: 72px;
     height: 96px;
-    background-image: url("/assets/sparks_empty.png");
+    background-image: url("assets/sparks_empty.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
