@@ -1,0 +1,11 @@
+Titel der Arbeit: milo's forest adventure
+
+Name und Vorname: Bucher Lukas
+
+Modulname & Semester: Development for Web & Mobile Frühlingssemester 2024
+
+Kurzbeschrieb der Arbeit:
+Entwicklung einer Webanwendung mit Frontend und Backend, die Nutzern ermöglicht, Daten sicher zu speichern und abzurufen. Die Anwendung wurde mit HTML, CSS, JavaScript und Node.js realisiert.
+
+Deklarieren von Geistigem Eigentum:
+Ich bestätige hiermit, dass diese Arbeit eigenständig und ohne unerlaubte Hilfe angefertigt wurde. Externe Quellen für Code, Assets etc. wurden eplizit gekennzeichnet. Zudem wurden KI-Tools (z.B. ChatGPT) unterstützend bei der Erstellung dieser Arbeit verwendet, besonders bei der Ideenfindung, Text- & Bildgenerierung, Codeentwickling & -überarbeitung.
