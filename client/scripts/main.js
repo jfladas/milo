@@ -51,7 +51,7 @@ sparkSound.volume = 0.1;
 let birbSound = document.getElementById("birbsound");
 birbSound.volume = 0.5;
 
-let url = "http://milo-3qob.onrender.com:3000/check";
+let url = "http://127.0.0.1:3000/check";
 fetch(url, {
     method: 'POST',
     credentials: 'include', // Ensure cookies are included in the request
@@ -79,7 +79,7 @@ fetch(url, {
 function saveData() {
     player.score = player.ending * 1000 + player.sparks * 100 + player.sympathy * 20 + secrets.day.found * 10 + secrets.night.found * 10;
     if (secrets.day.uncovered.fox) { player.score += 20; }
-    let url = "http://milo-3qob.onrender.com:3000/save";
+    let url = "http://127.0.0.1:3000/save";
     fetch(url, {
         method: 'POST',
         credentials: 'include',
@@ -97,7 +97,7 @@ function saveData() {
 }
 
 function deleteData() {
-    let url = "http://milo-3qob.onrender.com:3000/delete";
+    let url = "http://127.0.0.1:3000/delete";
     let playerId = { id: player.id };  // Wrap the id in an object
 
     fetch(url, {
@@ -176,7 +176,7 @@ function createScoreEntries() {
     }
 }
 function getTopData() {
-    let url = "http://milo-3qob.onrender.com:3000/top";
+    let url = "http://127.0.0.1:3000/top";
     fetch(url, {
         method: 'POST',
         headers: {
@@ -447,7 +447,7 @@ function addEventListeners() {
         }
     });
     window.addEventListener('click', (evt) => {
-        //console.log("clicked on: " + evt.target.id);
+        console.log("clicked on: " + evt.target.id);
         switch (evt.target.id) {
             case "iconfs":
                 spark.animateSpark(evt.clientX, evt.clientY);

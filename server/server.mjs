@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'https://jfladas.github.io/milo/client/' }));
+app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5500' }));
 app.use(cookieParser());
 
 app.options('/check', cors());
