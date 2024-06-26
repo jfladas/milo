@@ -285,7 +285,7 @@ function initialize() {
     } else {
         ttl.style.backgroundSize = "contain";
         ttl.style.backgroundColor = "var(--dark)";
-        ttl.innerHTML = "milo's forest adventure is not available on mobile, please use a desktop or laptop to play!";
+        ttl.innerText = "milo's forest adventure is not available on mobile, please use a desktop or laptop to play!\n\n\n";
     }
     function isMobile() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
