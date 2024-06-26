@@ -29,3 +29,5 @@
 ## [Demo ohne Server](https://jfladas.github.io/milo/client/)
 
 ## [Video Playthrough](https://youtu.be/_kuLURwhBGY)
+
+## [Dokumentation](https://jfladas.github.io/milo/doc/milo.pdf)
