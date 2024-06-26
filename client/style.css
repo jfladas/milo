@@ -52,6 +52,11 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    font-size: 100px;
+    color: var(--yellow);
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
 }
 
 #end {

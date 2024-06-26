@@ -252,34 +252,44 @@ function endScreen() {
 }
 
 function initialize() {
-    document.getElementById("title").style.position = "absolute";
-    setTimeout(() => {
-        document.getElementById("title").animate([
-            { opacity: "1" },
-            { opacity: "0" }
-        ], {
-            duration: 1000,
-            fill: "forwards"
-        });
-        document.getElementById("fox").style.top = "55vh";
-        document.getElementById("spark").style.top = "25vh";
+    const ttl = document.getElementById("title");
+    if (!isMobile()) {
+        ttl.style.position = "absolute";
+        setTimeout(() => {
+            document.getElementById("title").animate([
+                { opacity: "1" },
+                { opacity: "0" }
+            ], {
+                duration: 1000,
+                fill: "forwards"
+            });
+            document.getElementById("fox").style.top = "55vh";
+            document.getElementById("spark").style.top = "25vh";
 
-        createDayPrlx();
-    }, 200);
+            createDayPrlx();
+        }, 200);
 
-    // create spark counter ui
-    for (let i = 0; i < 7; i++) {
-        let div = document.createElement('div');
-        div.className = 'sparks';
-        if (i == 0) {
-            div.style.marginRight = '20px';
+        // create spark counter ui
+        for (let i = 0; i < 7; i++) {
+            let div = document.createElement('div');
+            div.className = 'sparks';
+            if (i == 0) {
+                div.style.marginRight = '20px';
+            }
+            document.getElementById('spcon').appendChild(div);
         }
-        document.getElementById('spcon').appendChild(div);
+
+        addEventListeners();
+
+        nextScene();
+    } else {
+        ttl.style.backgroundSize = "contain";
+        ttl.style.backgroundColor = "var(--dark)";
+        ttl.innerHTML = "milo's forest adventure is not available on mobile, please use a desktop or laptop to play!";
     }
-
-    addEventListeners();
-
-    nextScene();
+    function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 }
 function start() {
     started = true;
