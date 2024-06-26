@@ -21,10 +21,12 @@
 ### 3. Frontend starten
 
 - zum Verzeichnis `/client` navigieren und in Visual Studio Code öffnen
-- die HTML-Datei `index.html` öffnen
 - unten rechts auf `Go Live` klicken, um den Live Server zu starten
 - das Projekt sollte automatisch im Browser geöffnet werden
+- Ansonsten im browser `http://127.0.0.1:5500/` aufrufen
 
 ### Viel Spass bei *milo's forest adventure*!
 
 ## [Demo ohne Server](https://jfladas.github.io/milo/client/)
+
+## [Video Playthrough](https://youtu.be/_kuLURwhBGY)

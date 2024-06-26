@@ -1,1 +1,470 @@
-[]
+[
+  {
+    "player": {
+      "id": "ec9db4ed-ee75-46ed-86cd-4a1424d23882",
+      "name": "mio",
+      "sparks": 4,
+      "sympathy": 3,
+      "ending": 1,
+      "score": 1480
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": false,
+          "shrum3": false,
+          "flwr3": true,
+          "berries": false,
+          "birds": true
+        },
+        "count": 4,
+        "found": 2
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": false,
+          "flwr1": false,
+          "flwr2": false,
+          "flies": false
+        },
+        "count": 5,
+        "found": 0
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
+      "name": "alex",
+      "sparks": 1,
+      "sympathy": 5,
+      "ending": 2,
+      "score": 120
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": false,
+          "shrum3": false,
+          "flwr3": true,
+          "berries": true,
+          "birds": false
+        },
+        "count": 4,
+        "found": 3
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": true,
+          "shrum2": false,
+          "flwr1": false,
+          "flwr2": true,
+          "flies": false
+        },
+        "count": 5,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "b2c3d4e5-f678-9012-abcd-1234567890gh",
+      "name": "lisa",
+      "sparks": 3,
+      "sympathy": 2,
+      "ending": 1,
+      "score": 1050
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum3": false,
+          "flwr3": false,
+          "berries": false,
+          "birds": true
+        },
+        "count": 4,
+        "found": 2
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": false,
+          "shrum2": true,
+          "flwr1": false,
+          "flwr2": false,
+          "flies": false
+        },
+        "count": 5,
+        "found": 1
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "c3d4e5f6-7890-1234-abcd-1234567890ij",
+      "name": "john",
+      "sparks": 2,
+      "sympathy": 6,
+      "ending": 3,
+      "score": 200
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": true,
+          "flies": true
+        },
+        "count": 5,
+        "found": 5
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "d4e5f678-9012-3456-abcd-1234567890kl",
+      "name": "sara",
+      "sparks": 5,
+      "sympathy": 4,
+      "ending": 2,
+      "score": 1600
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": false,
+          "shrum3": false,
+          "flwr3": true,
+          "berries": false,
+          "birds": false
+        },
+        "count": 4,
+        "found": 1
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": false,
+          "flwr1": false,
+          "flwr2": false,
+          "flies": true
+        },
+        "count": 5,
+        "found": 1
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "e5f67890-1234-5678-abcd-1234567890mn",
+      "name": "chris",
+      "sparks": 2,
+      "sympathy": 3,
+      "ending": 1,
+      "score": 1250
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": false,
+          "shrum3": false,
+          "flwr3": false,
+          "berries": false,
+          "birds": true
+        },
+        "count": 4,
+        "found": 1
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": false,
+          "flwr1": true,
+          "flwr2": false,
+          "flies": false
+        },
+        "count": 5,
+        "found": 1
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "f6789012-3456-7890-abcd-1234567890op",
+      "name": "nina",
+      "sparks": 4,
+      "sympathy": 7,
+      "ending": 3,
+      "score": 1000
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": true,
+          "flies": true
+        },
+        "count": 5,
+        "found": 5
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "90123456-7890-1234-abcd-1234567890qr",
+      "name": "mike",
+      "sparks": 1,
+      "sympathy": 4,
+      "ending": 2,
+      "score": 180
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": false,
+          "shrum3": false,
+          "flwr3": false,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 3
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": false,
+          "flwr2": false,
+          "flies": false
+        },
+        "count": 5,
+        "found": 2
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "01234567-8901-2345-abcd-1234567890st",
+      "name": "jane",
+      "sparks": 0,
+      "sympathy": 5,
+      "ending": 3,
+      "score": -900
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": false,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": false,
+          "birds": true
+        },
+        "count": 4,
+        "found": 3
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": false,
+          "flies": true
+        },
+        "count": 5,
+        "found": 3
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "23456789-0123-4567-abcd-1234567890uv",
+      "name": "kevin",
+      "sparks": 5,
+      "sympathy": 4,
+      "ending": 1,
+      "score": 1400
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": false,
+          "all": true,
+          "shrum3": false,
+          "flwr3": true,
+          "berries": false,
+          "birds": true
+        },
+        "count": 4,
+        "found": 3
+      },
+      "night": {
+        "uncovered": {
+          "all": false,
+          "shrum1": false,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": false,
+          "flies": true
+        },
+        "count": 5,
+        "found": 3
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "34567890-1234-5678-abcd-1234567890wx",
+      "name": "lucy",
+      "sparks": 7,
+      "sympathy": 6,
+      "ending": 3,
+      "score": 1850
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": true,
+          "flies": true
+        },
+        "count": 5,
+        "found": 5
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "267516c3-3ece-4bc4-8e58-3d322211c87a",
+      "name": "Lukas",
+      "sparks": 3,
+      "sympathy": 3,
+      "ending": 3,
+      "score": 370
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": true,
+          "flies": true
+        },
+        "count": 5,
+        "found": 5
+      }
+    }
+  },
+  {
+    "player": {
+      "id": "9760fda2-2997-4979-b5ee-92ba84f3671c",
+      "name": "Lukas",
+      "sparks": 7,
+      "sympathy": 3,
+      "ending": 3,
+      "score": 3870
+    },
+    "secrets": {
+      "day": {
+        "uncovered": {
+          "fox": true,
+          "all": true,
+          "shrum3": true,
+          "flwr3": true,
+          "berries": true,
+          "birds": true
+        },
+        "count": 4,
+        "found": 4
+      },
+      "night": {
+        "uncovered": {
+          "all": true,
+          "shrum1": true,
+          "shrum2": true,
+          "flwr1": true,
+          "flwr2": true,
+          "flies": true
+        },
+        "count": 5,
+        "found": 5
+      }
+    }
+  }
+]

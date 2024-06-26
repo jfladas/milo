@@ -246,6 +246,7 @@ function endScreen() {
                 duration: 700,
                 easing: "ease-in",
             });
+            sparkSound.play();
         }, i * 750 + 1000);
     }
 }
@@ -447,7 +448,7 @@ function addEventListeners() {
         }
     });
     window.addEventListener('click', (evt) => {
-        console.log("clicked on: " + evt.target.id);
+        //console.log("clicked on: " + evt.target.id);
         switch (evt.target.id) {
             case "iconfs":
                 spark.animateSpark(evt.clientX, evt.clientY);
