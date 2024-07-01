@@ -33,4 +33,6 @@
 
 ### [Video Playthrough](https://youtu.be/_kuLURwhBGY)
 
+### [itch.io](https://jfladas.itch.io/milos-forest-adventure)
+
 ### [Dokumentation](https://jfladas.github.io/milo/doc/milo.pdf)
