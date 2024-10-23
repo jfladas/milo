@@ -25,7 +25,7 @@
 
 - zum Verzeichnis `/client` navigieren und in Visual Studio Code öffnen
 - unten rechts auf `Go Live` klicken, um den Live Server zu starten
-- das Projekt sollte automatisch im Browser geöffnet werden (ansonsten im Browser `http://127.0.0.1:5500/` aufrufen)
+- das Projekt sollte automatisch im Browser geöffnet werden (ansonsten im Browser `http://127.0.0.1:5500/` aufrufen, Live Server Einstellungen erst dementsprechend anpassen)
 
 #### Viel Spass bei *milo's forest adventure*!
 
