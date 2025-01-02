@@ -29,10 +29,10 @@
 
 #### Viel Spass bei *milo's forest adventure*!
 
-### [Demo ohne Server](https://jfladas.github.io/milo/client/)
+### [Demo ohne Server](https://milo.jfladas.com)
 
 ### [Video Playthrough](https://youtu.be/_kuLURwhBGY)
 
 ### [itch.io](https://jfladas.itch.io/milos-forest-adventure)
 
-### [Dokumentation](https://jfladas.github.io/milo/doc/milo.pdf)
+### [Dokumentation](https://github.com/jfladas/milo/blob/75ae81b433047c4cced2009a32b4c7a774d4676a/doc/milo.pdf)
